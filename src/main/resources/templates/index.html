@@ -89,6 +89,21 @@
 
         <div class="project-list">
          <article class="project-item">
+          <a th:href="@{/work/yt-script-project}" class="project-link">
+           <div class="project-img-box">
+            <picture>
+             <source th:srcset="@{/images/yt-web.webp}" type="image/webp" />
+             <img th:src="@{/images/portfolio-web.png}" width="100%" alt="Project 1" loading="lazy" />
+            </picture>
+           </div>
+           <div class="project-info">
+            <h2 class="project-title">Youtube Script Maker</h2>
+            <p class="project-preview box">웹 기반 지능형 유튜브 자막 생성기</p>
+           </div>
+          </a>
+         </article>
+
+         <article class="project-item">
           <a th:href="@{/work/portfolio-project}" class="project-link">
            <div class="project-img-box">
             <picture>

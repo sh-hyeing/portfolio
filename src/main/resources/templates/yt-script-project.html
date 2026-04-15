@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Letter Project | Work Detail</title>
+  <title>Youtube Script Maker | Work Detail</title>
   <link rel="stylesheet" th:href="@{/css/style.css}" />
  </head>
  <body>
@@ -21,23 +21,23 @@
        <header class="detail-header">
         <div class="detail-title-wrap">
          <p class="detail-label">PROJECT DETAIL</p>
-         <h1 class="detail-title">Letter Project</h1>
-         <p class="detail-subtitle">창작 교류와 기록을 위한 감성형 디지털 아카이빙 플랫폼</p>
+         <h1 class="detail-title">Youtube Script Maker</h1>
+         <p class="detail-subtitle">유튜브 영상 자막을 불러와 영어·한국어 학습용 스크립트로 정리하고 PDF로 저장할 수 있는 웹 기반 학습 도구</p>
         </div>
 
         <div class="header-meta">
-         <p class="detail-period">2025.11. - 2025.12.</p>
-         <a href="https://letter-concept.vercel.app/" target="_blank" class="visit-btn">VISIT SITE ↗</a>
+         <p class="detail-period">2026.04.12. - 2026.04.14.</p>
+         <a href="https://yt-script-maker.vercel.app/" target="_blank" class="visit-btn">VISIT SITE ↗</a>
         </div>
        </header>
 
        <div class="detail-tags">
-        <span>HTML5</span>
-        <span>CSS</span>
+        <span>Next.js</span>
         <span>Javascript</span>
-        <span>React</span>
+        <span>CSS</span>
         <span>Vercel</span>
-        <span>Firebase</span>
+        <span>Railway</span>
+        <span>Gemini API</span>
        </div>
 
        <div class="detail-main">
@@ -45,20 +45,26 @@
          <div class="summary-grid">
           <article class="summary-card">
            <span class="summary-label">프로젝트 개요</span>
-           <p class="summary-text">창작 교류 행사와 관련된 기록을 온라인에서 정리하고 공유할 수 있도록 구성한 디지털 아카이빙 플랫폼입니다.</p>
+           <p class="summary-text">
+            <span class="summary-highlight">Next.js</span> 기반 웹앱으로 구현하고, <span class="summary-highlight">Railway</span>의 transcript
+            server로 자막 추출 문제를 분리해 해결했습니다. 또한 <span class="summary-highlight">Gemini 다중 API 키 회전</span>과
+            <span class="summary-highlight">자동 재시도 로직</span>을 적용했습니다.
+           </p>
           </article>
 
           <article class="summary-card">
            <span class="summary-label">주요 특징</span>
            <p class="summary-text">
-            행사 컨셉과 분위기에 어울리는 레이아웃과 시각 요소를 중심으로 설계하고 단순 정보 전달을 넘어 감성적인 사용자 경험을 구현했습니다.
+            Next.js 기반 웹앱으로 구현하고, Vercel 환경에서 직접 자막 추출이 어려운 문제를 Railway의 yt-dlp transcript server로 분리해 해결했습니다.
+            또한 Gemini 다중 API 키 회전과 자동 재시도 로직을 적용해 긴 자막도 비교적 안정적으로 처리할 수 있도록 구성했습니다.
            </p>
           </article>
 
           <article class="summary-card">
            <span class="summary-label">주요 기능</span>
            <p class="summary-text">
-            공지 확인, 갤러리 리스트, Firebase 기반 방명록 기능을 통해 참여자와 방문자가 기록을 함께 남길 수 있도록 구성했습니다.
+            유튜브 자막 추출, Gemini 기반 학습 스크립트 생성, 다중 API 키 회전, quota exceeded 자동 재시도, 중단 / 이어하기, PDF 다운로드, 반응형 UI를
+            구현했습니다.
            </p>
           </article>
          </div>

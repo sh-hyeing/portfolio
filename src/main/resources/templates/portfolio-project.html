@@ -19,30 +19,50 @@
 
       <div class="detail-content">
        <header class="detail-header">
-        <h1 class="detail-title">Portfolio</h1>
+        <div class="detail-title-wrap">
+         <p class="detail-label">PROJECT DETAIL</p>
+         <h1 class="detail-title">Portfolio</h1>
+         <p class="detail-subtitle">나만의 색깔과 작업 흐름을 담아낸 개인 포트폴리오 및 아카이브 웹사이트</p>
+        </div>
+
         <div class="header-meta">
          <p class="detail-period">2026.02. - 2026.03.</p>
          <a href="https://jhi-portfolio.site/" target="_blank" class="visit-btn">VISIT SITE ↗</a>
         </div>
        </header>
 
-       <div class="detail-main">
-        <section class="detail-text-section">
-         <h3>summary</h3>
-         <p class="detail-description"><strong>프로젝트 개요</strong>: 나만의 색깔을 담은 개인 포트폴리오 및 아카이브 웹사이트 개발</p>
-         <p class="detail-description">
-          <strong>주요 특징</strong>: Thymeleaf를 활용한 SSR 구현 및 Swup.js를 이용한 SPA 스타일의 페이지 전환, GitHub Actions CI/CD 파이프라인
-          구축으로 배포 자동화
-         </p>
-         <p class="detail-description"><strong>주요 기능</strong>: 자기소개, 기술 스택 카드, 프로젝트 상세 보기, MySQL 기반의 방명록</p>
+       <div class="detail-tags">
+        <span>HTML5</span>
+        <span>CSS</span>
+        <span>Javascript</span>
+        <span>Spring Boot</span>
+        <span>Thymeleaf</span>
+        <span>Swup.js</span>
+        <span>AWS EC2</span>
+        <span>MySQL</span>
+       </div>
 
-         <div class="detail-tags">
-          <span>HTML5</span>
-          <span>CSS</span>
-          <span>Javascript</span>
-          <span>Spring Boot</span>
-          <span>AWS EC2</span>
-          <span>MySQL</span>
+       <div class="detail-main">
+        <section class="detail-summary-section">
+         <div class="summary-grid">
+          <article class="summary-card">
+           <span class="summary-label">프로젝트 개요</span>
+           <p class="summary-text">나만의 색깔을 담은 개인 포트폴리오이자, 프로젝트와 기록을 함께 정리할 수 있는 아카이브 웹사이트를 개발했습니다.</p>
+          </article>
+
+          <article class="summary-card">
+           <span class="summary-label">주요 특징</span>
+           <p class="summary-text">
+            <span class="summary-highlight">Thymeleaf</span>를 활용한 <span class="summary-highlight">SSR 방식</span>으로 페이지를 구성하고,
+            <span class="summary-highlight">Swup.js</span>를 적용해 SPA처럼 자연스러운 전환 경험을 구현했습니다. 또한
+            <span class="summary-highlight">GitHub Actions 기반 CI/CD 파이프라인</span>을 구축해 배포 과정을 자동화했습니다.
+           </p>
+          </article>
+
+          <article class="summary-card">
+           <span class="summary-label">주요 기능</span>
+           <p class="summary-text">자기소개, 기술 스택 카드, 프로젝트 상세 페이지, MySQL 기반 방명록 기능을 구현했습니다.</p>
+          </article>
          </div>
         </section>
        </div>

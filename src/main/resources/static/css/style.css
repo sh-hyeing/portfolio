@@ -124,6 +124,17 @@
  }
 }
 
+@media (min-width: 900px) {
+ .summary-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+ }
+
+ .summary-card:first-child {
+  grid-column: 1 / -1;
+ }
+}
+
 @media (min-width: 1024px) {
  .col-lg-1 {
   grid-column: span 1;
@@ -635,83 +646,177 @@ body::before {
 }
 
 .detail-header {
- margin-bottom: clamp(20px, 4vh, 40px);
- text-align: center;
+ margin-bottom: clamp(28px, 4.5vh, 44px);
+ text-align: left;
+ display: flex;
+ flex-direction: column;
+ gap: 18px;
+}
+
+.detail-title-wrap {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+}
+
+.detail-label {
+ font-family: "Paquito-Bold", sans-serif;
+ font-size: clamp(0.7rem, 0.85vw, 0.78rem);
+ letter-spacing: 0.16em;
+ color: rgba(45, 45, 45, 0.42);
+ text-transform: uppercase;
 }
 
 .detail-title {
  font-family: "Paquito-Bold", sans-serif;
- font-size: clamp(1.6rem, 3vw, 2.2rem);
+ font-size: clamp(2rem, 3.2vw, 2.7rem);
  color: var(--text-main);
- margin-bottom: 15px;
+ margin: 0;
+ line-height: 1.02;
+ letter-spacing: -0.02em;
+}
+
+.detail-subtitle {
+ font-family: "Pretendard", sans-serif;
+ font-size: clamp(0.96rem, 1.15vw, 1.02rem);
+ line-height: 1.78;
+ color: rgba(45, 45, 45, 0.68);
+ max-width: 40rem;
 }
 
 .header-meta {
  display: flex;
- justify-content: right;
  align-items: center;
- gap: clamp(10px, 2vw, 20px);
+ justify-content: space-between;
+ gap: 16px;
+ padding-top: 14px;
+ margin-top: 2px;
+ border-top: 1px solid rgba(45, 45, 45, 0.12);
 }
 
 .detail-period {
  font-family: "Paquito-Bold", sans-serif;
- font-size: clamp(0.8rem, 1vw, 0.9rem);
- color: #333;
+ font-size: clamp(0.82rem, 0.95vw, 0.9rem);
+ color: rgba(45, 45, 45, 0.86);
  margin: 0;
+ letter-spacing: 0.01em;
 }
 
 .visit-btn {
  text-decoration: none;
  font-family: "Paquito-Bold", sans-serif;
- font-size: clamp(0.78rem, 1vw, 0.85rem);
+ font-size: clamp(0.76rem, 0.92vw, 0.84rem);
  color: #fff;
- background-color: #333;
- padding: 8px 14px;
- border-radius: 20px;
- transition: background-color 0.2s;
+ background-color: #3b3a39;
+ padding: 10px 16px;
+ border-radius: 16px;
+ transition:
+  background-color 0.2s,
+  transform 0.2s,
+  box-shadow 0.2s;
+ box-shadow: 0 8px 20px rgba(45, 45, 45, 0.08);
 }
 
 .visit-btn:hover {
- background-color: var(--color-2);
- color: #333;
+ background-color: #2f2e2d;
+ color: #fff;
+ transform: translateY(-1px);
 }
 
-.detail-text-section h3 {
+.detail-summary-section h3 {
  font-family: "Paquito-Bold", sans-serif;
- font-size: clamp(1rem, 1.5vw, 1.2rem);
+ font-size: clamp(1.05rem, 1.45vw, 1.24rem);
  padding: 0;
- margin: 0;
- margin-inline-start: 0px;
- margin-inline-end: 0px;
+ margin: 0 0 2px 0;
  color: #333;
-}
-
-.detail-description {
- font-family: "Pretendard", sans-serif;
- font-size: clamp(0.95rem, 1.2vw, 1.05rem);
- line-height: 1.8;
- color: var(--text-main);
-}
-
-.detail-description strong,
-.detail-text-section h3 {
- color: #000;
+ letter-spacing: -0.01em;
 }
 
 .detail-tags {
  display: flex;
  flex-wrap: wrap;
  gap: 10px;
- margin-top: 20px;
+ margin-top: 12px;
+ margin-bottom: 26px;
 }
 
 .detail-tags span {
  font-family: "Paquito-Bold", sans-serif;
- font-size: clamp(0.72rem, 0.9vw, 0.8rem);
- color: #666;
- background-color: #f5f5f5;
- padding: 5px 12px;
- border-radius: 4px;
+ font-size: clamp(0.72rem, 0.88vw, 0.79rem);
+ color: rgba(45, 45, 45, 0.78);
+ background-color: rgba(255, 255, 255, 0.38);
+ border: 1px solid rgba(45, 45, 45, 0.07);
+ padding: 7px 13px;
+ border-radius: 12px;
+ backdrop-filter: blur(3px);
+}
+
+.detail-main {
+ display: flex;
+ flex-direction: column;
+ gap: 22px;
+}
+
+.detail-summary-section {
+ display: flex;
+ flex-direction: column;
+ gap: 14px;
+}
+
+.summary-grid {
+ display: grid;
+ grid-template-columns: 1fr;
+ gap: 16px;
+}
+
+.summary-card {
+ background: rgba(255, 255, 255, 0.34);
+ border: 1px solid rgba(255, 255, 255, 0.32);
+ border-radius: 16px;
+ padding: 20px 20px 18px;
+ box-shadow: 0 10px 30px rgba(45, 45, 45, 0.04);
+}
+
+.summary-card:first-child {
+ background: rgba(255, 255, 255, 0.45);
+}
+
+.summary-label {
+ display: inline-flex;
+ align-items: center;
+ gap: 8px;
+ margin-bottom: 12px;
+ font-family: "Paquito-Bold", sans-serif;
+ font-size: 0.8rem;
+ letter-spacing: 0.04em;
+ color: rgba(45, 45, 45);
+}
+
+.summary-label::before {
+ content: "";
+ width: 8px;
+ height: 1px;
+ background: rgba(45, 45, 45, 0.35);
+}
+
+.summary-text {
+ font-family: "Pretendard", sans-serif;
+ font-size: clamp(0.95rem, 1.08vw, 1rem);
+ line-height: 1.9;
+ color: rgba(45, 45, 45, 0.92);
+ margin: 0;
+ word-break: keep-all;
+}
+
+.summary-highlight {
+ color: #4f3b1f;
+ font-weight: 700;
+ background-image: linear-gradient(rgba(168, 196, 214, 0.82), rgba(168, 196, 214, 0.82));
+ background-repeat: no-repeat;
+ background-size: 100% 0.52em;
+ background-position: 0 86%;
+ padding: 0 2px;
+ border-radius: 2px;
 }
 
 .stretching-text {
@@ -1336,7 +1441,85 @@ html.is-animating .transition-fade {
  }
 
  .detail-header {
-  margin-bottom: 25px;
+  gap: 14px;
+  margin-bottom: 24px;
+ }
+
+ .detail-label {
+  letter-spacing: 0.14em;
+ }
+
+ .detail-title {
+  font-size: clamp(2.05rem, 9.2vw, 2.7rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  max-width: 7.2ch;
+ }
+
+ .detail-subtitle {
+  font-size: 0.94rem;
+  line-height: 1.72;
+  max-width: 100%;
+ }
+
+ .header-meta {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-top: 12px;
+ }
+
+ .detail-period {
+  font-size: 0.92rem;
+ }
+
+ .visit-btn {
+  padding: 9px 14px;
+  border-radius: 12px;
+  font-size: 0.74rem;
+  letter-spacing: 0.01em;
+ }
+
+ .detail-tags {
+  gap: 7px;
+  margin-top: 8px;
+  margin-bottom: 18px;
+ }
+
+ .detail-tags span {
+  padding: 6px 10px;
+  border-radius: 9px;
+  font-size: 0.73rem;
+  color: rgba(45, 45, 45, 0.72);
+  background-color: rgba(255, 255, 255, 0.32);
+ }
+
+ .detail-summary-section {
+  gap: 12px;
+ }
+
+ .summary-grid {
+  gap: 12px;
+ }
+
+ .summary-card {
+  padding: 16px 14px 15px;
+ }
+
+ .summary-label {
+  margin-bottom: 8px;
+  font-size: 0.76rem;
+ }
+
+ .summary-text {
+  font-size: 0.92rem;
+  line-height: 1.82;
+ }
+
+ .summary-highlight {
+  background-size: 100% 0.44em;
+  background-position: 0 88%;
  }
 }
 

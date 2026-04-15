@@ -4,6 +4,22 @@
  }
  const swup = window._swupInstance;
 
+ if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+ }
+
+ function resetPageScroll() {
+  requestAnimationFrame(() => {
+   window.scrollTo(0, 0);
+   document.documentElement.scrollTop = 0;
+   document.body.scrollTop = 0;
+
+   const paper = document.querySelector(".document-paper");
+   if (paper) {
+    paper.scrollTop = 0;
+   }
+  });
+ }
  function initIndexObserver() {
   const paper = document.querySelector(".document-paper");
   if (!paper) return;
@@ -67,10 +83,14 @@
  });
 
  function initHomePage() {
-  initIndexObserver();
+  resetPageScroll();
+
+  const isDetailPage = document.querySelector(".folder-frame.is-detail");
+  if (!isDetailPage) {
+   initIndexObserver();
+  }
 
   const slider = document.querySelector(".tech-slider");
-
   const dotsContainer = document.querySelector(".slider-dots");
   const cards = Array.from(document.querySelectorAll(".tech-card"));
 
@@ -182,5 +202,8 @@
  }
 
  document.addEventListener("DOMContentLoaded", initHomePage);
- swup.hooks.on("page:view", initHomePage);
+ swup.hooks.on("page:view", () => {
+  resetPageScroll();
+  initHomePage();
+ });
 </script>
