@@ -1,0 +1,58 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio | Work Detail</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+ </head>
+ <body>
+  <main id="swup">
+   <div class="folder-frame theme-work is-detail">
+    <div th:replace="~{fragments/nav :: mainMenu('work')}"></div>
+
+    <div class="document-paper">
+     <div class="paper-content-area transition-fade">
+      <div class="back-nav">
+       <a th:href="@{/#work}" class="back-link">← BACK</a>
+      </div>
+
+      <div class="detail-content">
+       <header class="detail-header">
+        <h1 class="detail-title">Portfolio</h1>
+        <div class="header-meta">
+         <p class="detail-period">2026.02. - 2026.03.</p>
+         <a href="https://jhi-portfolio.site/" target="_blank" class="visit-btn">VISIT SITE ↗</a>
+        </div>
+       </header>
+
+       <div class="detail-main">
+        <section class="detail-text-section">
+         <h3>summary</h3>
+         <p class="detail-description"><strong>프로젝트 개요</strong>: 나만의 색깔을 담은 개인 포트폴리오 및 아카이브 웹사이트 개발</p>
+         <p class="detail-description">
+          <strong>주요 특징</strong>: Thymeleaf를 활용한 SSR 구현 및 Swup.js를 이용한 SPA 스타일의 페이지 전환, GitHub Actions CI/CD 파이프라인
+          구축으로 배포 자동화
+         </p>
+         <p class="detail-description"><strong>주요 기능</strong>: 자기소개, 기술 스택 카드, 프로젝트 상세 보기, MySQL 기반의 방명록</p>
+
+         <div class="detail-tags">
+          <span>HTML5</span>
+          <span>CSS</span>
+          <span>Javascript</span>
+          <span>Spring Boot</span>
+          <span>AWS EC2</span>
+          <span>MySQL</span>
+         </div>
+        </section>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </main>
+
+  <script src="https://unpkg.com/swup@4"></script>
+  <script th:replace="~{fragments/script :: commonJs}"></script>
+ </body>
+</html>

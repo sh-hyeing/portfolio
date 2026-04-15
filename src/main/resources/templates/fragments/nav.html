@@ -1,0 +1,24 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+ <div th:fragment="mainMenu(activeTab)" class="main-menu">
+  <a th:href="@{/#swup}" class="theme-home" th:classappend="${activeTab == 'home' ? 'active-tab' : ''}">
+   <div class="folder-tab-top"></div>
+   <div class="folder-tab-body"><span>HOME</span></div>
+  </a>
+
+  <a th:href="@{/#about}" class="theme-about" th:classappend="${activeTab == 'about' ? 'active-tab' : ''}">
+   <div class="folder-tab-top"></div>
+   <div class="folder-tab-body"><span>ABOUT</span></div>
+  </a>
+
+  <a th:href="@{/#work}" class="theme-work" th:classappend="${activeTab == 'work' ? 'active-tab' : ''}">
+   <div class="folder-tab-top"></div>
+   <div class="folder-tab-body"><span>PROJECT</span></div>
+  </a>
+
+  <a th:href="@{/#guest}" class="theme-guest" th:classappend="${activeTab == 'guest' ? 'active-tab' : ''}">
+   <div class="folder-tab-top"></div>
+   <div class="folder-tab-body"><span>GUEST</span></div>
+  </a>
+ </div>
+</html>

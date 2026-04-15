@@ -1,0 +1,186 @@
+<script th:fragment="commonJs" th:inline="javascript">
+ if (!window._swupInstance) {
+  window._swupInstance = new Swup();
+ }
+ const swup = window._swupInstance;
+
+ function initIndexObserver() {
+  const paper = document.querySelector(".document-paper");
+  if (!paper) return;
+
+  const allTabs = document.querySelectorAll(".main-menu a");
+  allTabs.forEach((tab) => tab.classList.remove("active-tab"));
+
+  const animationObserver = new IntersectionObserver(
+   (entries) => {
+    entries.forEach((entry) => {
+     if (entry.isIntersecting) {
+      entry.target.classList.add("is-visible");
+     }
+    });
+   },
+   { threshold: 0.1, rootMargin: "-20% 0px -20% 0px" },
+  );
+
+  const navObserver = new IntersectionObserver(
+   (entries) => {
+    entries.forEach((entry) => {
+     if (entry.isIntersecting) {
+      const sectionId = entry.target.id;
+      const allTabs = document.querySelectorAll(".main-menu a");
+      allTabs.forEach((tab) => tab.classList.remove("active-tab"));
+
+      const activeTab = document.querySelector(`.main-menu a.theme-${sectionId}`);
+      if (activeTab) {
+       activeTab.classList.add("active-tab");
+      }
+     }
+    });
+   },
+   { threshold: 0, rootMargin: "-40% 0px -60% 0px" },
+  );
+
+  document.querySelectorAll(".scroll-section").forEach((section) => {
+   animationObserver.observe(section);
+   navObserver.observe(section);
+  });
+
+  if (window.location.hash) {
+   const target = document.querySelector(window.location.hash);
+   if (target) {
+    setTimeout(() => target.scrollIntoView({ behavior: "smooth" }), 100);
+   }
+  }
+ }
+
+ window.addEventListener("scroll", () => {
+  const mainMenu = document.querySelector(".main-menu");
+  const isDetail = document.querySelector(".is-detail");
+
+  if (mainMenu && !isDetail) {
+   if (window.scrollY > 80) {
+    mainMenu.classList.add("side-index");
+   } else {
+    mainMenu.classList.remove("side-index");
+   }
+  }
+ });
+
+ function initHomePage() {
+  initIndexObserver();
+
+  const slider = document.querySelector(".tech-slider");
+
+  const dotsContainer = document.querySelector(".slider-dots");
+  const cards = Array.from(document.querySelectorAll(".tech-card"));
+
+  if (slider && dotsContainer && cards.length > 0) {
+   dotsContainer.innerHTML = "";
+   cards.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.className = "slider-dot";
+    dot.setAttribute("aria-label", `슬라이드 ${i + 1}`);
+    dot.addEventListener("click", () => {
+     const targetPos = cards[i].offsetLeft - slider.clientWidth / 2 + cards[i].offsetWidth / 2;
+     slider.scrollTo({ left: targetPos, behavior: "smooth" });
+
+     stopAutoSlide();
+     startAutoSlide();
+    });
+    dotsContainer.appendChild(dot);
+   });
+
+   const dots = document.querySelectorAll(".slider-dot");
+   let currentIndex = 0;
+
+   const updateCenterCard = () => {
+    const sliderCenter = slider.scrollLeft + slider.clientWidth / 2;
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    cards.forEach((card, index) => {
+     const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+     const distance = Math.abs(sliderCenter - cardCenter);
+     if (distance < minDistance) {
+      minDistance = distance;
+      closestIndex = index;
+     }
+    });
+
+    cards.forEach((c) => c.classList.remove("is-center"));
+    dots.forEach((d) => d.classList.remove("is-active"));
+
+    cards[closestIndex].classList.add("is-center");
+    dots[closestIndex].classList.add("is-active");
+    currentIndex = closestIndex;
+   };
+
+   let isScrolling;
+   slider.addEventListener("scroll", () => {
+    window.clearTimeout(isScrolling);
+    isScrolling = setTimeout(updateCenterCard, 50);
+   });
+
+   updateCenterCard();
+
+   let autoSlideInterval;
+
+   const startAutoSlide = () => {
+    autoSlideInterval = setInterval(() => {
+     const nextIndex = (currentIndex + 1) % cards.length;
+     const targetPos = cards[nextIndex].offsetLeft - slider.clientWidth / 2 + cards[nextIndex].offsetWidth / 2;
+     slider.scrollTo({ left: targetPos, behavior: "smooth" });
+    }, 3000);
+   };
+
+   const stopAutoSlide = () => {
+    clearInterval(autoSlideInterval);
+   };
+
+   const sliderObserver = new IntersectionObserver(
+    (entries) => {
+     if (entries[0].isIntersecting) {
+      startAutoSlide();
+     } else {
+      stopAutoSlide();
+     }
+    },
+    { threshold: 0.1 },
+   );
+
+   sliderObserver.observe(slider);
+  }
+
+  const sub = document.getElementById("homeSub");
+  if (sub) {
+   sub.classList.remove("line-animate");
+   setTimeout(() => sub.classList.add("line-animate"), 800);
+  }
+
+  const guestbookList = document.querySelector(".guest-list");
+  if (guestbookList) {
+   guestbookList.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete-btn")) {
+     e.preventDefault();
+     const guestId = e.target.getAttribute("data-id");
+     const password = prompt("삭제를 위해 비밀번호를 입력해주세요.");
+     if (password) {
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = `/guest/delete/${guestId}`;
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "password";
+      input.value = password;
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+     }
+    }
+   });
+  }
+ }
+
+ document.addEventListener("DOMContentLoaded", initHomePage);
+ swup.hooks.on("page:view", initHomePage);
+</script>

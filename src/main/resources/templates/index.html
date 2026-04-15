@@ -1,0 +1,166 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>jhi-portfolio</title>
+  <link rel="icon" th:href="@{/favicon.png}" type="image/x-icon" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+ </head>
+ <body>
+  <main id="swup">
+   <div class="folder-frame theme-home">
+    <div th:replace="~{fragments/nav :: mainMenu('home')}"></div>
+
+    <div class="document-paper" id="scroll-container">
+     <div class="transition-fade">
+      <section id="home" class="scroll-section">
+       <div class="paper-content-area home-dynamic-layout">
+        <div class="home-line line-top">
+         <span class="big-word greet-word">Hello!</span>
+        </div>
+        <div class="home-line line-mid">
+         <span class="big-word name-word">I'm Hyein</span>
+        </div>
+        <div class="home-line line-bottom">
+         <p class="home-sub" id="homeSub">developer — making things feel alive</p>
+         <span class="role-tag">Portfolio 2026</span>
+        </div>
+       </div>
+      </section>
+
+      <section id="about" class="scroll-section">
+       <div class="paper-content-area">
+        <h1 class="stretching-text">ABOUT</h1>
+        <div class="simple-box-wrapper">
+         <a href="https://github.com/sh-hyeing" target="_blank" class="github-tab-btn">
+          <span>GitHub</span>
+         </a>
+         <div class="simple-box">
+          <h3>생각은 유연하게 열어두고 단단하게 개발합니다.</h3>
+          <p class="box">
+           주니어 개발자로서 화면을 만들 때 항상 "이걸 쓰는 사람은 어떻게 느낄까?"를 먼저 묻습니다. 자연스러운 흐름 하나가 사용자의 경험을 바꿀 수
+           있다고 생각합니다.
+          </p>
+          <p class="box">사용자 피드백을 바탕으로 개선하고 팀과 함께 고민하며 점진적으로 더 나은 서비스를 만들어가고 싶습니다.</p>
+         </div>
+        </div>
+
+        <div class="tech-slider-wrapper">
+         <div class="tech-slider">
+          <div class="tech-card">
+           <div class="tech-header">Frontend</div>
+           <div class="tech-body">
+            <span style="background-color: #f7df1e">Javascript</span>
+            <span style="background-color: #06b6d4; color: #fff">Tailwind CSS</span>
+            <span style="background-color: #61dafb">React</span>
+            <span style="background-color: #000000; color: #fff">Next.js</span>
+           </div>
+          </div>
+
+          <div class="tech-card">
+           <div class="tech-header">Backend</div>
+           <div class="tech-body">
+            <span style="background-color: #ffca28">Firebase</span>
+            <span style="background-color: #82b355">Spring Boot</span>
+            <span style="background-color: #4479a1; color: #fff">MySQL</span>
+           </div>
+          </div>
+
+          <div class="tech-card">
+           <div class="tech-header">Tools</div>
+           <div class="tech-body">
+            <span style="background-color: #ff9900">AWS EC2</span>
+            <span style="background-color: #000000; color: #fff">Vercel</span>
+            <span style="background-color: #181717; color: #fff">GitHub</span>
+           </div>
+          </div>
+         </div>
+         <div class="slider-dots"></div>
+        </div>
+       </div>
+      </section>
+
+      <section id="work" class="scroll-section">
+       <div class="paper-content-area">
+        <div class="work-header">
+         <h1 class="stretching-text">PROJECT</h1>
+        </div>
+
+        <div class="project-list">
+         <article class="project-item">
+          <a th:href="@{/work/portfolio-project}" class="project-link">
+           <div class="project-img-box">
+            <picture>
+             <source th:srcset="@{/images/portfolio_web.webp}" type="image/webp" />
+             <img th:src="@{/images/portfolio_web.png}" width="100%" alt="Project 1" loading="lazy" />
+            </picture>
+           </div>
+           <div class="project-info">
+            <h2 class="project-title">Portfolio</h2>
+            <p class="project-preview box">나만의 색깔을 담은 개인 포트폴리오</p>
+           </div>
+          </a>
+         </article>
+
+         <article class="project-item">
+          <a th:href="@{/work/letter-project}" class="project-link" loading="lazy">
+           <div class="project-img-box">
+            <picture>
+             <source th:srcset="@{/images/letter-web.webp}" type="image/webp" />
+             <img th:src="@{/images/letter-web.png}" width="100%" alt="Project 2" />
+            </picture>
+           </div>
+           <div class="project-info">
+            <h2 class="project-title">Letter Project</h2>
+            <p class="project-preview box">디지털 아카이빙 플랫폼</p>
+           </div>
+          </a>
+         </article>
+        </div>
+       </div>
+      </section>
+
+      <section id="guest" class="scroll-section">
+       <div class="paper-content-area">
+        <h1 class="stretching-text">GUEST</h1>
+        <section class="guest-form-section">
+         <form class="guest-form" th:action="@{/guest/add}" th:object="${guestForm}" method="post">
+          <div class="form-top">
+           <input type="text" th:field="*{name}" placeholder="Name" class="input-name" required autocomplete="name" />
+           <input type="password" th:field="*{password}" placeholder="Password" class="input-pw" required autocomplete="current-password" />
+          </div>
+          <textarea th:field="*{message}" placeholder="Enter Your Message" class="input-msg" required></textarea>
+          <div class="form-bottom">
+           <button type="submit" class="guest-submit-btn">POST</button>
+          </div>
+         </form>
+        </section>
+
+        <div class="guest-list">
+         <article class="guest-item" th:each="guest : ${guestList}">
+          <div class="guest-meta">
+           <div class="meta-info">
+            <span class="guest-name" th:text="${guest.name}">이름</span>
+            <span class="guest-date" th:text="${#temporals.format(guest.regDate, 'yyyy.MM.dd')}">날짜</span>
+           </div>
+           <div class="meta-actions">
+            <button type="button" class="action-btn delete-btn" th:attr="data-id=${guest.id}">DELETE</button>
+           </div>
+          </div>
+          <div class="guest-message-box">
+           <p th:text="${guest.message}">메시지 내용</p>
+          </div>
+         </article>
+        </div>
+       </div>
+      </section>
+     </div>
+    </div>
+   </div>
+  </main>
+
+  <script src="https://unpkg.com/swup@4"></script>
+  <script th:replace="~{fragments/script :: commonJs}"></script>
+ </body>
+</html>
