@@ -141,6 +141,8 @@
         <h1 class="stretching-text">GUEST</h1>
         <section class="guest-form-section">
          <form class="guest-form" th:action="@{/guest/add}" th:object="${guestForm}" method="post">
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="guest-honey" />
+          <input type="hidden" name="submittedAt" th:value="${#dates.createNow().time}" />
           <div class="form-top">
            <input type="text" th:field="*{name}" placeholder="Name" class="input-name" required autocomplete="name" />
            <input type="password" th:field="*{password}" placeholder="Password" class="input-pw" required autocomplete="current-password" />
@@ -149,6 +151,7 @@
           <div class="form-bottom">
            <button type="submit" class="guest-submit-btn">POST</button>
           </div>
+          <p class="guest-error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
          </form>
         </section>
 

@@ -145,16 +145,14 @@
 
    let autoSlideInterval;
 
-   const startAutoSlide = () => {
-    autoSlideInterval = setInterval(() => {
-     const nextIndex = (currentIndex + 1) % cards.length;
-     const targetPos = cards[nextIndex].offsetLeft - slider.clientWidth / 2 + cards[nextIndex].offsetWidth / 2;
-     slider.scrollTo({ left: targetPos, behavior: "smooth" });
-    }, 3000);
+    const startAutoSlide = () => {
+    autoSlideInterval = null;
    };
 
    const stopAutoSlide = () => {
-    clearInterval(autoSlideInterval);
+    if (autoSlideInterval) {
+     clearInterval(autoSlideInterval);
+    }
    };
 
    const sliderObserver = new IntersectionObserver(
