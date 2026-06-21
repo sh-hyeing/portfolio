@@ -3,176 +3,165 @@
  <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>jhi-portfolio</title>
+  <title>Hyein Portfolio</title>
   <link rel="icon" th:href="@{/favicon.png}" type="image/x-icon" />
   <link rel="stylesheet" th:href="@{/css/style.css}" />
  </head>
- <body>
+ <body class="campaign-page">
   <main id="swup">
-   <div class="folder-frame theme-home">
+   <div class="campaign-shell">
     <div th:replace="~{fragments/nav :: mainMenu('home')}"></div>
 
-    <div class="document-paper" id="scroll-container">
+    <div class="campaign-canvas" id="scroll-container">
      <div class="transition-fade">
-      <section id="home" class="scroll-section">
-       <div class="paper-content-area home-dynamic-layout">
-        <div class="home-line line-top">
-         <span class="big-word greet-word">Hello!</span>
-        </div>
-        <div class="home-line line-mid">
-         <span class="big-word name-word">I'm Hyein</span>
-        </div>
-        <div class="home-line line-bottom">
-         <p class="home-sub" id="homeSub">developer — making things feel alive</p>
-         <span class="role-tag">Portfolio 2026</span>
-        </div>
+      <section id="home" class="campaign-hero local-hero scroll-section">
+       <span class="heart-pop heart-green heart-a">♥</span>
+       <span class="heart-pop heart-blue heart-b">♥</span>
+       <span class="heart-pop heart-purple heart-c">♥</span>
+       <span class="heart-pop heart-green heart-d">♥</span>
+       <span class="heart-pop heart-cream heart-e">♥</span>
+       <p class="hero-kicker">Portfolio 2026</p>
+       <h1 class="hero-slot-title">
+        <span class="hero-line">저는</span>
+        <span class="hero-line role-line">
+         <span class="role-slot" aria-live="polite" aria-label="희망 역할">
+          <span id="heroRoleSlot">웹개발자</span>
+         </span>
+         가
+        </span>
+        <span class="hero-line">될 수 있습니다.</span>
+       </h1>
+       <p class="hero-copy">
+        명확한 구조와 섬세한 인터랙션으로 오래 머무는 웹 경험을 만듭니다.
+       </p>
+       <div class="hero-actions">
+        <a href="#work" class="campaign-btn primary">프로젝트 보기</a>
+        <a href="#guest" class="campaign-btn secondary">방명록 남기기</a>
        </div>
       </section>
 
-      <section id="about" class="scroll-section">
-       <div class="paper-content-area">
-        <h1 class="stretching-text">ABOUT</h1>
-        <div class="simple-box-wrapper">
-         <a href="https://github.com/sh-hyeing" target="_blank" class="github-tab-btn">
-          <span>GitHub</span>
-         </a>
-         <div class="simple-box">
-          <h3>생각은 유연하게 열어두고 단단하게 개발합니다.</h3>
-          <p class="box">
-           주니어 개발자로서 화면을 만들 때 항상 "이걸 쓰는 사람은 어떻게 느낄까?"를 먼저 묻습니다. 자연스러운 흐름 하나가 사용자의 경험을 바꿀 수
-           있다고 생각합니다.
-          </p>
-          <p class="box">사용자 피드백을 바탕으로 개선하고 팀과 함께 고민하며 점진적으로 더 나은 서비스를 만들어가고 싶습니다.</p>
+      <section id="about" class="campaign-section about-section local-guide scroll-section">
+       <div class="section-heading">
+        <p class="section-eyebrow">About Hyein</p>
+        <h2>나를 더 깊이 만나는 방법</h2>
+        <p class="section-lead">화면을 만드는 태도부터 협업 방식까지, Hyein의 작업 방식을 두 가지 경로로 소개합니다.</p>
+       </div>
+
+       <div class="campaign-grid two-col">
+        <article class="campaign-card profile-card">
+         <div class="card-visual heart-visual">
+          <span></span><span></span><span></span>
          </div>
-        </div>
-
-        <div class="tech-slider-wrapper">
-         <div class="tech-slider">
-          <div class="tech-card">
-           <div class="tech-header">Frontend</div>
-           <div class="tech-body">
-            <span style="background-color: #f7df1e">Javascript</span>
-            <span style="background-color: #06b6d4; color: #fff">Tailwind CSS</span>
-            <span style="background-color: #61dafb">React</span>
-            <span style="background-color: #000000; color: #fff">Next.js</span>
-           </div>
-          </div>
-
-          <div class="tech-card">
-           <div class="tech-header">Backend</div>
-           <div class="tech-body">
-            <span style="background-color: #ffca28">Firebase</span>
-            <span style="background-color: #82b355">Spring Boot</span>
-            <span style="background-color: #4479a1; color: #fff">MySQL</span>
-           </div>
-          </div>
-
-          <div class="tech-card">
-           <div class="tech-header">Tools</div>
-           <div class="tech-body">
-            <span style="background-color: #ff9900">AWS EC2</span>
-            <span style="background-color: #000000; color: #fff">Vercel</span>
-            <span style="background-color: #181717; color: #fff">GitHub</span>
-           </div>
-          </div>
+         <span class="card-number">01</span>
+         <h3>개발 관점</h3>
+         <p>
+          화면을 만들 때 가장 먼저 사용자의 흐름을 봅니다. 자연스러운 단계, 읽기 쉬운 정보 구조, 부담 없는 피드백을 중요하게 생각합니다.
+         </p>
+        </article>
+        <article class="campaign-card profile-card">
+         <div class="card-visual route-visual">
+          <span></span><span></span><span></span>
          </div>
-         <div class="slider-dots"></div>
-        </div>
+         <span class="card-number">02</span>
+         <h3>협업 태도</h3>
+         <p>
+          피드백을 빠르게 반영하고, 팀과 함께 더 나은 방향을 찾습니다. 완성보다 개선을 반복하는 과정에 강점이 있습니다.
+         </p>
+        </article>
+       </div>
+
+       <div class="skill-strip">
+        <span>Javascript</span>
+        <span>React</span>
+        <span>Next.js</span>
+        <span>Spring Boot</span>
+        <span>MySQL</span>
+        <span>AWS EC2</span>
+        <span>Vercel</span>
        </div>
       </section>
 
-      <section id="work" class="scroll-section">
-       <div class="paper-content-area">
-        <div class="work-header">
-         <h1 class="stretching-text">PROJECT</h1>
-        </div>
+      <section id="work" class="campaign-section project-dark scroll-section">
+       <div class="section-heading">
+        <p class="section-eyebrow">Project showcase</p>
+        <h2>작업의 방향을 보여주는 프로젝트</h2>
+        <p class="section-lead">포트폴리오를 이루는 대표 작업을 카드로 모았습니다.</p>
+       </div>
 
-        <div class="project-list">
-         <article class="project-item">
-          <a th:href="@{/work/yt-script-project}" class="project-link">
-           <div class="project-img-box">
-            <picture>
-             <source th:srcset="@{/images/yt-web.webp}" type="image/webp" />
-             <img th:src="@{/images/portfolio-web.png}" width="100%" alt="Project 1" loading="lazy" />
-            </picture>
-           </div>
-           <div class="project-info">
-            <h2 class="project-title">Youtube Script Maker</h2>
-            <p class="project-preview box">웹 기반 지능형 유튜브 자막 생성기</p>
-           </div>
-          </a>
+       <div class="campaign-grid project-grid">
+         <article class="campaign-card project-card">
+          <picture>
+           <source th:srcset="@{/images/yt-web.webp}" type="image/webp" />
+           <img th:src="@{/images/yt-web.png}" alt="Youtube Script Maker preview" loading="eager" />
+          </picture>
+          <span class="route-label">Learning Tool</span>
+          <h3>Youtube Script Maker</h3>
+          <p>유튜브 자막을 학습용 스크립트로 정리하고 PDF로 저장할 수 있는 도구입니다.</p>
+          <a th:href="@{/work/yt-script-project}" class="card-cta">바로 보기</a>
          </article>
-
-         <article class="project-item">
-          <a th:href="@{/work/portfolio-project}" class="project-link">
-           <div class="project-img-box">
-            <picture>
-             <source th:srcset="@{/images/portfolio_web.webp}" type="image/webp" />
-             <img th:src="@{/images/portfolio_web.png}" width="100%" alt="Project 1" loading="lazy" />
-            </picture>
-           </div>
-           <div class="project-info">
-            <h2 class="project-title">Portfolio</h2>
-            <p class="project-preview box">나만의 색깔을 담은 개인 포트폴리오</p>
-           </div>
-          </a>
+         <article class="campaign-card project-card">
+          <picture>
+           <source th:srcset="@{/images/portfolio_web.webp}" type="image/webp" />
+           <img th:src="@{/images/portfolio_web.png}" alt="Portfolio preview" loading="eager" />
+          </picture>
+          <span class="route-label">Archive</span>
+          <h3>Portfolio</h3>
+          <p>자기소개, 프로젝트 상세, 방명록을 담은 개인 포트폴리오 사이트입니다.</p>
+         <a th:href="@{/work/portfolio-project}" class="card-cta">바로 보기</a>
          </article>
-
-         <article class="project-item">
-          <a th:href="@{/work/letter-project}" class="project-link" loading="lazy">
-           <div class="project-img-box">
-            <picture>
-             <source th:srcset="@{/images/letter-web.webp}" type="image/webp" />
-             <img th:src="@{/images/letter-web.png}" width="100%" alt="Project 2" />
-            </picture>
-           </div>
-           <div class="project-info">
-            <h2 class="project-title">Letter Project</h2>
-            <p class="project-preview box">디지털 아카이빙 플랫폼</p>
-           </div>
-          </a>
+         <article class="campaign-card project-card">
+          <picture>
+           <img th:src="@{/images/yourfit-board-display.jpg}" alt="뷰티샵 유어핏 사인보드 디자인 미리보기" loading="eager" />
+          </picture>
+          <span class="route-label">Design</span>
+          <h3>뷰티샵 유어핏</h3>
+          <p>브랜드 로고와 토끼 그래픽을 중심으로 포스터, 명함, 스탬프 카드, 사인보드를 통일감 있게 구성한 디자인 프로젝트입니다.</p>
+          <a th:href="@{/work/yourfit-project}" class="card-cta">바로 보기</a>
          </article>
-        </div>
        </div>
       </section>
 
-      <section id="guest" class="scroll-section">
-       <div class="paper-content-area">
-        <h1 class="stretching-text">GUEST</h1>
-        <section class="guest-form-section">
-         <form class="guest-form" th:action="@{/guest/add}" th:object="${guestForm}" method="post">
-          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="guest-honey" />
-          <input type="hidden" name="submittedAt" th:value="${#dates.createNow().time}" />
-          <div class="form-top">
-           <input type="text" th:field="*{name}" placeholder="Name" class="input-name" required autocomplete="name" />
-           <input type="password" th:field="*{password}" placeholder="Password" class="input-pw" required autocomplete="current-password" />
-          </div>
-          <textarea th:field="*{message}" placeholder="Enter Your Message" class="input-msg" required></textarea>
-          <div class="form-bottom">
-           <button type="submit" class="guest-submit-btn">POST</button>
-          </div>
-          <p class="guest-error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
-         </form>
-        </section>
+      <section id="guest" class="campaign-section guest-section scroll-section">
+       <div class="section-heading">
+        <p class="section-eyebrow">Guest book</p>
+        <h2>방문한 흔적을 짧게 남겨주세요.</h2>
+       </div>
+
+       <div class="guest-layout">
+        <form class="guest-form" th:action="@{/guest/add}" th:object="${guestForm}" method="post">
+         <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="guest-honey" />
+         <input type="hidden" name="submittedAt" th:value="${#dates.createNow().time}" />
+         <div class="form-top">
+          <input type="text" th:field="*{name}" placeholder="Name" class="input-name" required autocomplete="name" />
+          <input type="password" th:field="*{password}" placeholder="Password" class="input-pw" required autocomplete="current-password" />
+         </div>
+         <textarea th:field="*{message}" placeholder="Enter Your Message" class="input-msg" required></textarea>
+         <div class="form-bottom">
+          <button type="submit" class="campaign-btn primary guest-submit-btn">Post</button>
+         </div>
+         <p class="guest-error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+        </form>
 
         <div class="guest-list">
          <article class="guest-item" th:each="guest : ${guestList}">
           <div class="guest-meta">
            <div class="meta-info">
-            <span class="guest-name" th:text="${guest.name}">이름</span>
-            <span class="guest-date" th:text="${#temporals.format(guest.regDate, 'yyyy.MM.dd')}">날짜</span>
+            <span class="guest-name" th:text="${guest.name}">Name</span>
+            <span class="guest-date" th:text="${#temporals.format(guest.regDate, 'yyyy.MM.dd')}">Date</span>
            </div>
            <div class="meta-actions">
-            <button type="button" class="action-btn delete-btn" th:attr="data-id=${guest.id}">DELETE</button>
+            <button type="button" class="action-btn delete-btn" th:attr="data-id=${guest.id}">Delete</button>
            </div>
           </div>
           <div class="guest-message-box">
-           <p th:text="${guest.message}">메시지 내용</p>
+           <p th:text="${guest.message}">Message</p>
           </div>
          </article>
         </div>
        </div>
       </section>
+
+      <div th:replace="~{fragments/footer :: siteFooter}"></div>
      </div>
     </div>
    </div>

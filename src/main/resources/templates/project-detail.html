@@ -1,0 +1,71 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:text="${project.title + ' | Work Detail'}">Work Detail</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+ </head>
+ <body class="detail-page">
+  <main id="swup">
+   <div class="detail-shell is-detail">
+    <div th:replace="~{fragments/nav :: mainMenu('work')}"></div>
+
+    <article class="detail-canvas transition-fade">
+     <header class="detail-hero">
+      <div class="detail-copy">
+       <p class="detail-label">Project detail</p>
+       <h1 class="detail-title" th:text="${project.title}">Project Title</h1>
+       <p class="detail-subtitle" th:text="${project.subtitle}">Project subtitle</p>
+      </div>
+      <div class="detail-side">
+       <span class="detail-period" th:text="${project.period}">Period</span>
+       <span class="detail-type" th:text="${project.type}">Type</span>
+       <a th:if="${project.visitUrl != null and !#strings.isEmpty(project.visitUrl)}" th:href="${project.visitUrl}" target="_blank" rel="noopener" class="visit-btn">Visit site</a>
+      </div>
+     </header>
+
+     <section class="detail-preview" th:if="${project.galleryImages == null or project.galleryImages.isEmpty()}">
+      <picture>
+       <source th:if="${project.imageWebp != null and !#strings.isEmpty(project.imageWebp)}" th:srcset="@{${project.imageWebp}}" type="image/webp" />
+       <img th:src="@{${project.imagePng}}" th:alt="${project.imageAlt}" />
+      </picture>
+     </section>
+
+     <div class="detail-tags">
+      <span th:each="tag : ${project.tags}" th:text="${tag}">Tag</span>
+     </div>
+
+     <section class="detail-gallery" th:if="${project.galleryImages != null and !project.galleryImages.isEmpty()}">
+      <div class="detail-gallery-heading">
+       <span class="summary-label">Design gallery</span>
+      </div>
+      <div class="gallery-frame" data-gallery>
+       <div class="gallery-track" aria-label="Design project images">
+        <figure class="gallery-card" th:each="image : ${project.galleryImages}">
+         <img th:src="@{${image.src}}" th:alt="${image.alt}" loading="lazy" />
+        </figure>
+       </div>
+       <div class="gallery-controls" aria-label="Gallery controls">
+        <button type="button" class="gallery-btn" data-gallery-prev aria-label="Previous image">←</button>
+        <span class="gallery-count"><span data-gallery-current>1</span>/<span th:text="${#lists.size(project.galleryImages)}">4</span></span>
+        <button type="button" class="gallery-btn" data-gallery-next aria-label="Next image">→</button>
+       </div>
+      </div>
+     </section>
+
+     <section class="summary-grid">
+      <article class="summary-card" th:each="summary : ${project.summaries}">
+       <span class="summary-label" th:text="${summary.label}">Label</span>
+       <p class="summary-text" th:text="${summary.text}">Summary</p>
+      </article>
+     </section>
+    </article>
+   </div>
+   <div th:replace="~{fragments/footer :: siteFooter}"></div>
+  </main>
+
+  <script src="https://unpkg.com/swup@4"></script>
+  <script th:replace="~{fragments/script :: commonJs}"></script>
+ </body>
+</html>
