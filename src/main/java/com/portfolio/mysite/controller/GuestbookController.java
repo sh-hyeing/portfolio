@@ -42,8 +42,8 @@ public class GuestbookController {
                              Model model,
                              RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            model.addAttribute("guestList", guestbookService.getAllMessages());
-            return "index"; 
+            redirectAttributes.addFlashAttribute("errorMessage", "\uC774\uB984, \uBE44\uBC00\uBC88\uD638, \uBA54\uC2DC\uC9C0\uB97C \uD655\uC778\uD574 \uC8FC\uC138\uC694. \uBA54\uC2DC\uC9C0\uB294 5\uC790 \uC774\uC0C1\uC73C\uB85C \uC785\uB825\uD574\uC57C \uD569\uB2C8\uB2E4.");
+            return "redirect:/#guest"; 
         }
 
         var spamCheck = guestbookSpamGuard.check(
@@ -60,6 +60,7 @@ public class GuestbookController {
         }
 
         guestbookService.saveMessage(guestbook);
+        redirectAttributes.addFlashAttribute("successMessage", "\uBC29\uBA85\uB85D\uC774 \uB4F1\uB85D\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
         return "redirect:/#guest"; 
     }
 

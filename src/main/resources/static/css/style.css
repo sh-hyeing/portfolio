@@ -28,6 +28,8 @@
 html {
  scroll-behavior: smooth;
  background: var(--color-white);
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -65,6 +67,8 @@ button {
 
 img {
  max-width: 100%;
+ outline: 1px solid rgba(0, 0, 0, 0.1);
+ outline-offset: -1px;
 }
 
 ::selection {
@@ -117,7 +121,7 @@ html.is-animating .transition-fade {
  padding: 6px;
  border: 1px solid rgba(92, 189, 185, 0.24);
  border-radius: var(--radius-pill);
- background: rgba(235, 246, 245, 0.92);
+ background: rgba(255, 255, 255, 0.94);
  box-shadow: none;
  backdrop-filter: blur(14px);
  transform: none;
@@ -136,6 +140,7 @@ html.is-animating .transition-fade {
 
 .folder-tab-body,
 .main-menu.side-index .folder-tab-body {
+ position: relative;
  display: flex;
  align-items: center;
  justify-content: center;
@@ -146,8 +151,18 @@ html.is-animating .transition-fade {
  background: transparent;
  box-shadow: none;
  transition:
-  background 0.16s ease,
   color 0.16s ease;
+}
+
+.folder-tab-body::after {
+ content: "";
+ position: absolute;
+ right: 18px;
+ bottom: 5px;
+ left: 18px;
+ height: 2px;
+ border-radius: var(--radius-pill);
+ background: transparent;
 }
 
 .folder-tab-body span {
@@ -157,8 +172,11 @@ html.is-animating .transition-fade {
  letter-spacing: 0;
 }
 
-.main-menu a:hover .folder-tab-body,
 .main-menu a.active-tab .folder-tab-body {
+ background: transparent;
+}
+
+.main-menu a.active-tab .folder-tab-body::after {
  background: var(--color-mint);
 }
 
@@ -208,6 +226,7 @@ html.is-animating .transition-fade {
  font-weight: 700;
  line-height: 1;
  letter-spacing: 0;
+ text-wrap: balance;
  word-break: keep-all;
 }
 
@@ -248,6 +267,7 @@ html.is-animating .transition-fade {
  font-size: clamp(1rem, 1.5vw, 1.26rem);
  font-weight: 400;
  line-height: 1.6;
+ text-wrap: pretty;
  word-break: keep-all;
 }
 
@@ -280,7 +300,8 @@ html.is-animating .transition-fade {
  box-shadow: none;
  transition:
   background 0.16s ease,
-  color 0.16s ease;
+  color 0.16s ease,
+  scale 0.14s ease;
 }
 
 .campaign-btn.primary,
@@ -297,6 +318,14 @@ html.is-animating .transition-fade {
 .action-btn:hover {
  background: #4fb0ac;
  color: #051312;
+}
+
+.campaign-btn:active,
+.card-cta:active,
+.visit-btn:active,
+.action-btn:active,
+.gallery-btn:active {
+ scale: 0.96;
 }
 
 .heart-pop {
@@ -365,6 +394,7 @@ html.is-animating .transition-fade {
  font-weight: 700;
  line-height: 1.08;
  letter-spacing: 0;
+ text-wrap: balance;
  white-space: nowrap;
  word-break: keep-all;
 }
@@ -376,6 +406,7 @@ html.is-animating .transition-fade {
  font-size: clamp(0.98rem, 1.35vw, 1.14rem);
  font-weight: 400;
  line-height: 1.68;
+ text-wrap: pretty;
  word-break: keep-all;
 }
 
@@ -559,6 +590,7 @@ html.is-animating .transition-fade {
 .project-card h3 {
  margin-top: 8px;
  font-size: clamp(1.55rem, 2.1vw, 2.1rem);
+ text-wrap: balance;
 }
 
 .project-card p {
@@ -566,6 +598,7 @@ html.is-animating .transition-fade {
  margin-top: 12px;
  margin-bottom: 22px;
  font-size: clamp(0.96rem, 1.2vw, 1.08rem);
+ text-wrap: pretty;
 }
 
 .card-cta {
@@ -582,13 +615,9 @@ html.is-animating .transition-fade {
 
 .guest-layout {
  display: grid;
- grid-template-columns: minmax(380px, 520px) minmax(0, 1fr);
- gap: clamp(20px, 3vw, 36px);
-}
-
-.guest-layout:not(:has(.guest-item)) {
  grid-template-columns: minmax(0, 720px);
  justify-content: center;
+ gap: clamp(18px, 2.6vw, 28px);
 }
 
 .guest-form {
@@ -647,7 +676,10 @@ html.is-animating .transition-fade {
 }
 
 .form-bottom {
- justify-content: flex-end;
+ display: grid;
+ grid-template-columns: minmax(0, 1fr) auto;
+ align-items: center;
+ gap: 12px;
  margin-top: 0;
 }
 
@@ -655,20 +687,35 @@ html.is-animating .transition-fade {
  min-width: 104px;
 }
 
+.guest-feedback {
+ min-width: 0;
+ text-align: center;
+}
+
+.guest-success,
 .guest-error {
  margin: 0;
- color: #b42318;
  font-size: 0.9rem;
+}
+
+.guest-success {
+ color: #28716d;
+}
+
+.guest-error {
+ color: #b42318;
 }
 
 .guest-list {
  display: grid;
  gap: 12px;
  align-content: start;
+ width: min(100%, 720px);
+ margin: 0 auto;
 }
 
 .guest-item {
- padding: 18px;
+ padding: clamp(18px, 2.6vw, 28px);
 }
 
 .guest-meta {
@@ -707,8 +754,9 @@ html.is-animating .transition-fade {
 .guest-message-box {
  margin-top: 12px;
  padding: 14px;
+ border: 1px solid var(--color-line);
  border-radius: var(--radius-md);
- background: var(--color-white);
+ background: rgba(255, 255, 255, 0.72);
 }
 
 .guest-message-box p {
@@ -716,6 +764,7 @@ html.is-animating .transition-fade {
  color: var(--color-muted);
  font-size: 0.96rem;
  line-height: 1.66;
+ text-wrap: pretty;
  word-break: break-word;
 }
 
@@ -809,6 +858,7 @@ html.is-animating .transition-fade {
  font-weight: 700;
  line-height: 1.02;
  letter-spacing: 0;
+ text-wrap: balance;
  word-break: keep-all;
 }
 
@@ -819,6 +869,7 @@ html.is-animating .transition-fade {
  font-size: clamp(0.96rem, 1.15vw, 1.06rem);
  font-weight: 400;
  line-height: 1.64;
+ text-wrap: pretty;
  word-break: keep-all;
 }
 
@@ -907,7 +958,10 @@ html.is-animating .transition-fade {
 }
 
 .gallery-card {
- flex: 0 0 calc((100% - 16px) / 2);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ flex: 0 0 var(--gallery-card-width, calc((100% - 16px) / 2));
  margin: 0;
  overflow: hidden;
  border-radius: 0;
@@ -918,7 +972,9 @@ html.is-animating .transition-fade {
 .gallery-card img {
  display: block;
  width: 100%;
- height: clamp(360px, 36vw, 520px);
+ margin: 0 auto;
+ max-height: clamp(320px, 34vw, 500px);
+ height: auto;
  object-fit: contain;
  background: var(--color-white);
 }
@@ -935,6 +991,7 @@ html.is-animating .transition-fade {
 }
 
 .gallery-btn {
+ position: relative;
  display: inline-flex;
  align-items: center;
  justify-content: center;
@@ -946,11 +1003,26 @@ html.is-animating .transition-fade {
  color: var(--color-text);
  font: inherit;
  line-height: 1;
+ transition:
+  background 0.16s ease,
+  color 0.16s ease,
+  scale 0.14s ease;
+}
+
+.gallery-btn::after {
+ content: "";
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ width: 40px;
+ height: 40px;
+ transform: translate(-50%, -50%);
 }
 
 .gallery-count {
  min-width: 36px;
  text-align: center;
+ font-variant-numeric: tabular-nums;
 }
 
 .summary-grid {
@@ -969,6 +1041,7 @@ html.is-animating .transition-fade {
  font-size: 0.95rem;
  font-weight: 400;
  line-height: 1.66;
+ text-wrap: pretty;
  word-break: keep-all;
 }
 
@@ -986,30 +1059,6 @@ html.is-animating .transition-fade {
   padding-right: 10px;
   padding-bottom: 24px;
   padding-left: 10px;
- }
-
- .site-footer {
-  padding-bottom: calc(42px + var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
- }
-
- .main-menu,
- .main-menu.side-index {
-  position: fixed;
-  top: auto;
-  right: 10px;
-  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-  left: 10px;
-  z-index: 100;
-  width: min(620px, calc(100% - 20px));
-  min-height: var(--nav-height);
-  margin: 0;
-  margin-right: auto;
-  margin-left: auto;
-  padding: 6px;
-  border: 1px solid rgba(92, 189, 185, 0.24);
-  border-radius: var(--radius-pill);
-  background: rgba(235, 246, 245, 0.92);
-  backdrop-filter: blur(14px);
  }
 
  .folder-tab-body {
@@ -1087,12 +1136,34 @@ html.is-animating .transition-fade {
   gap: 10px;
  }
 
- .gallery-card {
-  flex-basis: min(84vw, 440px);
+ .gallery-card img {
+  max-height: clamp(220px, 48vw, 360px);
+ }
+}
+
+@media (max-width: 767px) {
+ .site-footer {
+  padding-bottom: calc(42px + var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
  }
 
- .gallery-card img {
-  height: clamp(280px, 76vw, 440px);
+ .main-menu,
+ .main-menu.side-index {
+  position: fixed;
+  top: auto;
+  right: 10px;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  left: 10px;
+  z-index: 100;
+  width: min(620px, calc(100% - 20px));
+  min-height: var(--nav-height);
+  margin: 0;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 6px;
+  border: 1px solid rgba(92, 189, 185, 0.24);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
  }
 }
 
@@ -1134,16 +1205,16 @@ html.is-animating .transition-fade {
  }
 
  .guest-meta {
-  align-items: flex-start;
-  flex-direction: column;
+  align-items: center;
+  flex-direction: row;
  }
 
  .meta-actions {
-  width: 100%;
+  flex: 0 0 auto;
  }
 
  .action-btn {
-  width: 100%;
+  width: auto;
  }
 
  .footer-inner {

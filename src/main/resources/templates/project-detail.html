@@ -32,7 +32,7 @@
       </picture>
      </section>
 
-     <div class="detail-tags">
+     <div class="detail-tags" th:if="${project.tags != null and !project.tags.isEmpty()}">
       <span th:each="tag : ${project.tags}" th:text="${tag}">Tag</span>
      </div>
 
@@ -48,7 +48,7 @@
        </div>
        <div class="gallery-controls" aria-label="Gallery controls">
         <button type="button" class="gallery-btn" data-gallery-prev aria-label="Previous image">←</button>
-        <span class="gallery-count"><span data-gallery-current>1</span>/<span th:text="${#lists.size(project.galleryImages)}">4</span></span>
+        <span class="gallery-count"><span data-gallery-current>1</span>/<span data-gallery-total>1</span></span>
         <button type="button" class="gallery-btn" data-gallery-next aria-label="Next image">→</button>
        </div>
       </div>

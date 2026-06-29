@@ -267,52 +267,114 @@
    const track = gallery.querySelector(".gallery-track");
    const cards = Array.from(gallery.querySelectorAll(".gallery-card"));
    const current = gallery.querySelector("[data-gallery-current]");
+   const total = gallery.querySelector("[data-gallery-total]");
    const prev = gallery.querySelector("[data-gallery-prev]");
    const next = gallery.querySelector("[data-gallery-next]");
    if (!track || cards.length === 0) return;
 
-   let activeIndex = 0;
+   const cardsPerPage = 2;
+   const totalPages = Math.max(1, Math.ceil(cards.length / cardsPerPage));
+   let activePage = 0;
 
-   const updateCount = () => {
-    if (current) {
-     current.textContent = String(activeIndex + 1);
+   const getGap = () => {
+    const styles = window.getComputedStyle(track);
+    return Number.parseFloat(styles.columnGap || styles.gap || "0") || 0;
+   };
+
+   const getImageRatio = (card) => {
+    const image = card.querySelector("img");
+    if (!image || !image.naturalWidth || !image.naturalHeight) return 1;
+    return image.naturalWidth / image.naturalHeight;
+   };
+
+   const syncCardWidths = () => {
+    const gap = getGap();
+    const availableWidth = Math.max(track.clientWidth - gap, 0);
+
+    for (let index = 0; index < cards.length; index += cardsPerPage) {
+     const pair = cards.slice(index, index + cardsPerPage);
+
+     if (pair.length === 1) {
+      pair[0].style.setProperty("--gallery-card-width", `${track.clientWidth}px`);
+      continue;
+     }
+
+     const ratios = pair.map(getImageRatio);
+     const totalRatio = ratios.reduce((sum, ratio) => sum + ratio, 0) || pair.length;
+
+     const minWidth = availableWidth * 0.34;
+     const maxWidth = availableWidth * 0.66;
+     let firstWidth = availableWidth * (ratios[0] / totalRatio);
+     firstWidth = Math.min(maxWidth, Math.max(minWidth, firstWidth));
+     const secondWidth = availableWidth - firstWidth;
+
+     pair[0].style.setProperty("--gallery-card-width", `${firstWidth}px`);
+     pair[1].style.setProperty("--gallery-card-width", `${secondWidth}px`);
     }
    };
 
-   const goTo = (index) => {
-    activeIndex = Math.min(cards.length - 1, Math.max(0, index));
+   const updateCount = () => {
+    if (current) {
+     current.textContent = String(activePage + 1);
+    }
+    if (total) {
+     total.textContent = String(totalPages);
+    }
+   };
+
+   const goTo = (page) => {
+    activePage = Math.min(totalPages - 1, Math.max(0, page));
+    const firstCardIndex = activePage * cardsPerPage;
     track.scrollTo({
-     left: cards[activeIndex].offsetLeft - track.offsetLeft,
+     left: cards[firstCardIndex].offsetLeft - track.offsetLeft,
      behavior: "smooth",
     });
     updateCount();
    };
 
    if (prev) {
-    prev.addEventListener("click", () => goTo(activeIndex - 1));
+    prev.addEventListener("click", () => goTo(activePage - 1));
    }
 
    if (next) {
-    next.addEventListener("click", () => goTo(activeIndex + 1));
+    next.addEventListener("click", () => goTo(activePage + 1));
    }
 
    track.addEventListener("scroll", () => {
     window.clearTimeout(track._galleryScrollTimer);
     track._galleryScrollTimer = window.setTimeout(() => {
-     const center = track.scrollLeft + track.clientWidth / 2;
-     const closest = cards.reduce(
-      (result, card, index) => {
-       const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-       const distance = Math.abs(center - cardCenter);
-       return distance < result.distance ? { index, distance } : result;
+     const pageStarts = Array.from({ length: totalPages }, (_, index) => {
+      const card = cards[index * cardsPerPage];
+      return card ? card.offsetLeft - track.offsetLeft : 0;
+     });
+     const closest = pageStarts.reduce(
+      (result, left, page) => {
+       const distance = Math.abs(track.scrollLeft - left);
+       return distance < result.distance ? { page, distance } : result;
       },
-      { index: activeIndex, distance: Infinity },
+      { page: activePage, distance: Infinity },
      );
-     activeIndex = closest.index;
+     activePage = closest.page;
      updateCount();
     }, 80);
    });
 
+   const images = cards.map((card) => card.querySelector("img")).filter(Boolean);
+   images.forEach((image) => {
+    if (!image.complete) {
+     image.addEventListener("load", syncCardWidths, { once: true });
+    }
+   });
+
+   window.addEventListener("resize", () => {
+    window.clearTimeout(track._galleryResizeTimer);
+    track._galleryResizeTimer = window.setTimeout(() => {
+     syncCardWidths();
+     goTo(activePage);
+    }, 120);
+   });
+
+   syncCardWidths();
    updateCount();
   });
  }

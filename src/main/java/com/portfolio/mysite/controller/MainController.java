@@ -102,7 +102,7 @@ public class MainController {
                             new GalleryImage("/images/yourfit-stamp-card-display.jpg", "유어핏 스탬프 카드 디자인"),
                             new GalleryImage("/images/yourfit-business-card-display.jpg", "유어핏 명함 디자인")
                     ),
-                    List.of("Brand Identity", "Graphic Design", "Print Design", "Signage", "Beauty Studio"),
+                    List.of(),
                     List.of(
                             new SummaryItem("프로젝트 개요", "뷰티샵 유어핏의 로고와 캐릭터 그래픽을 중심으로 매장 경험에 필요한 인쇄물과 사인 시스템을 구성했습니다."),
                             new SummaryItem("디자인 방향", "크림 톤의 종이 질감, 부드러운 핑크 포인트, 손그림 토끼 그래픽을 활용해 친근하고 편안한 뷰티샵 이미지를 만들었습니다."),
