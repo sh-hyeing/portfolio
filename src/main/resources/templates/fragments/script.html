@@ -1,6 +1,13 @@
 <script th:fragment="commonJs" th:inline="javascript">
  if (!window._swupInstance) {
-  window._swupInstance = new Swup();
+  window._swupInstance =
+   typeof Swup === "function"
+    ? new Swup()
+    : {
+       hooks: {
+        on() {},
+       },
+      };
  }
  const swup = window._swupInstance;
 
@@ -259,6 +266,173 @@
   }
  }
 
+ function initHomeConceptDrag() {
+  const concept = document.querySelector(".home-concept");
+  if (!concept) return;
+
+  const design = concept.querySelector(".concept-frame-design");
+  const web = concept.querySelector(".concept-frame-web");
+  const path = concept.querySelector(".concept-path path");
+  const svg = concept.querySelector(".concept-path");
+  if (!design || !web || !path || !svg) return;
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const getPosition = (frame) => {
+   const frameRect = frame.getBoundingClientRect();
+   const conceptRect = concept.getBoundingClientRect();
+   return {
+    x: frameRect.left - conceptRect.left,
+    y: frameRect.top - conceptRect.top,
+    width: frameRect.width,
+    height: frameRect.height,
+   };
+  };
+
+  const setPosition = (frame, x, y) => {
+   const position = getClampedPosition(frame, x, y);
+   frame.style.left = `${position.x}px`;
+   frame.style.top = `${position.y}px`;
+   frame.style.right = "auto";
+   frame.style.bottom = "auto";
+   return position;
+  };
+
+  const getClampedPosition = (frame, x, y) => {
+   const maxX = Math.max(concept.clientWidth - frame.offsetWidth, 0);
+   const maxY = Math.max(concept.clientHeight - frame.offsetHeight, 0);
+   return {
+    x: clamp(x, 0, maxX),
+    y: clamp(y, 0, maxY),
+   };
+  };
+
+  const drawPath = () => {
+   const designPos = getPosition(design);
+   const webPos = getPosition(web);
+   const designCenterX = designPos.x + designPos.width * 0.5;
+   const designCenterY = designPos.y + designPos.height * 0.5;
+   const webCenterX = webPos.x + webPos.width * 0.5;
+   const webCenterY = webPos.y + webPos.height * 0.5;
+   const overlapX = Math.min(designPos.x + designPos.width, webPos.x + webPos.width) - Math.max(designPos.x, webPos.x);
+   const useVerticalConnection = overlapX > 0;
+   let start;
+   let end;
+   let pathData;
+
+   if (useVerticalConnection) {
+    const designIsLower = designCenterY >= webCenterY;
+    start = {
+     x: designCenterX,
+     y: designIsLower ? designPos.y : designPos.y + designPos.height,
+    };
+    end = {
+     x: webCenterX,
+     y: designIsLower ? webPos.y + webPos.height : webPos.y,
+    };
+    const curve = Math.max(42, Math.abs(start.y - end.y) * 0.8);
+    const startControlY = start.y + (designIsLower ? -curve : curve);
+    const endControlY = end.y + (designIsLower ? curve : -curve);
+    pathData = `M ${start.x} ${start.y} C ${start.x} ${startControlY}, ${end.x} ${endControlY}, ${end.x} ${end.y}`;
+   } else {
+    const designIsLeft = designCenterX <= webCenterX;
+    start = {
+     x: designIsLeft ? designPos.x + designPos.width : designPos.x,
+     y: designCenterY,
+    };
+    end = {
+     x: designIsLeft ? webPos.x : webPos.x + webPos.width,
+     y: webCenterY,
+    };
+    const distance = Math.max(70, Math.abs(end.x - start.x));
+    const curve = distance * 0.42;
+    const dip = (end.y - start.y) * 0.18;
+    pathData = `M ${start.x} ${start.y} C ${start.x + curve} ${start.y + dip}, ${end.x - curve} ${end.y - dip}, ${end.x} ${end.y}`;
+   }
+
+   svg.setAttribute("viewBox", `0 0 ${concept.clientWidth} ${concept.clientHeight}`);
+   path.setAttribute("d", pathData);
+  };
+
+  const syncInitialPositions = () => {
+   const designPos = getPosition(design);
+   const webPos = getPosition(web);
+   setPosition(design, designPos.x, designPos.y);
+   setPosition(web, webPos.x, webPos.y);
+   drawPath();
+  };
+
+  syncInitialPositions();
+
+  if (concept.dataset.dragBound === "true") {
+   drawPath();
+   return;
+  }
+  concept.dataset.dragBound = "true";
+
+  const bindDrag = (active, follower) => {
+   active.addEventListener("selectstart", (event) => {
+    event.preventDefault();
+   });
+
+   active.addEventListener("dragstart", (event) => {
+    event.preventDefault();
+   });
+
+   active.addEventListener("pointerdown", (event) => {
+     event.preventDefault();
+     window.getSelection()?.removeAllRanges();
+     active.setPointerCapture(event.pointerId);
+     active.classList.add("is-dragging");
+
+    const activeStart = getPosition(active);
+    const followerStart = getPosition(follower);
+    const pointerStart = { x: event.clientX, y: event.clientY };
+
+    const move = (moveEvent) => {
+     moveEvent.preventDefault();
+     window.getSelection()?.removeAllRanges();
+     const deltaX = moveEvent.clientX - pointerStart.x;
+     const deltaY = moveEvent.clientY - pointerStart.y;
+     const followerNext = {
+      ...followerStart,
+      ...getClampedPosition(follower, followerStart.x + deltaX * 0.38, followerStart.y),
+     };
+     const activeNext = {
+      ...activeStart,
+      ...getClampedPosition(active, activeStart.x + deltaX, activeStart.y + deltaY),
+     };
+
+     setPosition(follower, followerNext.x, followerNext.y);
+     setPosition(active, activeNext.x, activeNext.y);
+     drawPath();
+    };
+
+    const release = () => {
+     active.classList.remove("is-dragging");
+     active.removeEventListener("pointermove", move);
+     active.removeEventListener("pointerup", release);
+     active.removeEventListener("pointercancel", release);
+    };
+
+    active.addEventListener("pointermove", move);
+    active.addEventListener("pointerup", release);
+    active.addEventListener("pointercancel", release);
+   });
+  };
+
+  bindDrag(design, web);
+  bindDrag(web, design);
+
+  if (!window._homeConceptResizeBound) {
+   window._homeConceptResizeBound = true;
+   window.addEventListener("resize", () => {
+    clearTimeout(window._homeConceptResizeTimer);
+    window._homeConceptResizeTimer = setTimeout(initHomeConceptDrag, 120);
+   });
+  }
+ }
+
  function initDesignGalleryControls() {
   document.querySelectorAll("[data-gallery]").forEach((gallery) => {
    if (gallery.dataset.galleryBound === "true") return;
@@ -272,9 +446,11 @@
    const next = gallery.querySelector("[data-gallery-next]");
    if (!track || cards.length === 0) return;
 
-   const cardsPerPage = 2;
-   const totalPages = Math.max(1, Math.ceil(cards.length / cardsPerPage));
-   let activePage = 0;
+    let activePage = 0;
+
+    const getCardsPerPage = () => (window.matchMedia("(max-width: 640px)").matches ? 1 : 2);
+
+    const getTotalPages = () => Math.max(1, Math.ceil(cards.length / getCardsPerPage()));
 
    const getGap = () => {
     const styles = window.getComputedStyle(track);
@@ -287,11 +463,19 @@
     return image.naturalWidth / image.naturalHeight;
    };
 
-   const syncCardWidths = () => {
-    const gap = getGap();
-    const availableWidth = Math.max(track.clientWidth - gap, 0);
+    const syncCardWidths = () => {
+     const cardsPerPage = getCardsPerPage();
+     const gap = getGap();
+     const availableWidth = Math.max(track.clientWidth - gap * (cardsPerPage - 1), 0);
 
-    for (let index = 0; index < cards.length; index += cardsPerPage) {
+     if (cardsPerPage === 1) {
+      cards.forEach((card) => {
+       card.style.setProperty("--gallery-card-width", `${track.clientWidth}px`);
+      });
+      return;
+     }
+
+     for (let index = 0; index < cards.length; index += cardsPerPage) {
      const pair = cards.slice(index, index + cardsPerPage);
 
      if (pair.length === 1) {
@@ -313,18 +497,22 @@
     }
    };
 
-   const updateCount = () => {
-    if (current) {
-     current.textContent = String(activePage + 1);
-    }
+    const updateCount = () => {
+     const totalPages = getTotalPages();
+     activePage = Math.min(activePage, totalPages - 1);
+     if (current) {
+      current.textContent = String(activePage + 1);
+     }
     if (total) {
      total.textContent = String(totalPages);
     }
    };
 
-   const goTo = (page) => {
-    activePage = Math.min(totalPages - 1, Math.max(0, page));
-    const firstCardIndex = activePage * cardsPerPage;
+    const goTo = (page) => {
+     const cardsPerPage = getCardsPerPage();
+     const totalPages = getTotalPages();
+     activePage = Math.min(totalPages - 1, Math.max(0, page));
+     const firstCardIndex = activePage * cardsPerPage;
     track.scrollTo({
      left: cards[firstCardIndex].offsetLeft - track.offsetLeft,
      behavior: "smooth",
@@ -341,10 +529,12 @@
    }
 
    track.addEventListener("scroll", () => {
-    window.clearTimeout(track._galleryScrollTimer);
-    track._galleryScrollTimer = window.setTimeout(() => {
-     const pageStarts = Array.from({ length: totalPages }, (_, index) => {
-      const card = cards[index * cardsPerPage];
+     window.clearTimeout(track._galleryScrollTimer);
+     track._galleryScrollTimer = window.setTimeout(() => {
+      const cardsPerPage = getCardsPerPage();
+      const totalPages = getTotalPages();
+      const pageStarts = Array.from({ length: totalPages }, (_, index) => {
+       const card = cards[index * cardsPerPage];
       return card ? card.offsetLeft - track.offsetLeft : 0;
      });
      const closest = pageStarts.reduce(
@@ -366,12 +556,13 @@
     }
    });
 
-   window.addEventListener("resize", () => {
-    window.clearTimeout(track._galleryResizeTimer);
-    track._galleryResizeTimer = window.setTimeout(() => {
-     syncCardWidths();
-     goTo(activePage);
-    }, 120);
+    window.addEventListener("resize", () => {
+     window.clearTimeout(track._galleryResizeTimer);
+     track._galleryResizeTimer = window.setTimeout(() => {
+      syncCardWidths();
+      activePage = Math.min(activePage, getTotalPages() - 1);
+      goTo(activePage);
+     }, 120);
    });
 
    syncCardWidths();
@@ -391,6 +582,7 @@
 
   initHeroRoleSlot();
   initBouncingHearts();
+  initHomeConceptDrag();
   initDesignGalleryControls();
 
   const guestbookList = document.querySelector(".guest-list");
@@ -418,7 +610,7 @@
  }
 
  document.addEventListener("DOMContentLoaded", initHomePage);
- swup.hooks.on("page:view", () => {
+ swup.hooks?.on?.("page:view", () => {
   resetPageScroll();
   initHomePage();
  });
