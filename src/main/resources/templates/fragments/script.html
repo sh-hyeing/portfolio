@@ -442,6 +442,7 @@
    const cards = Array.from(gallery.querySelectorAll(".gallery-card"));
    const current = gallery.querySelector("[data-gallery-current]");
    const total = gallery.querySelector("[data-gallery-total]");
+   const dots = gallery.querySelector("[data-gallery-dots]");
    const prev = gallery.querySelector("[data-gallery-prev]");
    const next = gallery.querySelector("[data-gallery-next]");
    if (!track || cards.length === 0) return;
@@ -463,6 +464,26 @@
     return image.naturalWidth / image.naturalHeight;
    };
 
+   const syncGalleryLayout = () => {
+    const cardsPerPage = getCardsPerPage();
+    const startIndex = activePage * cardsPerPage;
+    const visibleCards = cards.slice(startIndex, startIndex + cardsPerPage);
+    const activeHeight = visibleCards.reduce((height, card) => {
+     const image = card.querySelector("img");
+     if (!image) return Math.max(height, card.offsetHeight || 0);
+
+     const ratio = getImageRatio(card);
+     const imageStyles = window.getComputedStyle(image);
+     const maxHeight = Number.parseFloat(imageStyles.maxHeight) || Infinity;
+     const targetHeight = Math.min(card.clientWidth / ratio, maxHeight);
+     return Math.max(height, targetHeight || image.offsetHeight || card.offsetHeight || 0);
+    }, 0);
+
+    if (activeHeight > 0) {
+     gallery.style.setProperty("--gallery-active-height", `${activeHeight}px`);
+    }
+   };
+
     const syncCardWidths = () => {
      const cardsPerPage = getCardsPerPage();
      const gap = getGap();
@@ -472,6 +493,7 @@
       cards.forEach((card) => {
        card.style.setProperty("--gallery-card-width", `${track.clientWidth}px`);
       });
+      syncGalleryLayout();
       return;
      }
 
@@ -495,7 +517,30 @@
      pair[0].style.setProperty("--gallery-card-width", `${firstWidth}px`);
      pair[1].style.setProperty("--gallery-card-width", `${secondWidth}px`);
     }
+    syncGalleryLayout();
    };
+
+    const syncDots = () => {
+     if (!dots) return;
+
+     const totalPages = getTotalPages();
+     if (dots.children.length !== totalPages) {
+      dots.replaceChildren(
+       ...Array.from({ length: totalPages }, (_, index) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "gallery-dot";
+        dot.setAttribute("aria-label", `Go to image group ${index + 1}`);
+        dot.addEventListener("click", () => goTo(index));
+        return dot;
+       }),
+      );
+     }
+
+     Array.from(dots.children).forEach((dot, index) => {
+      dot.classList.toggle("is-active", index === activePage);
+     });
+    };
 
     const updateCount = () => {
      const totalPages = getTotalPages();
@@ -506,6 +551,8 @@
     if (total) {
      total.textContent = String(totalPages);
     }
+    syncGalleryLayout();
+    syncDots();
    };
 
     const goTo = (page) => {

@@ -37,9 +37,6 @@
      </div>
 
      <section class="detail-gallery" th:if="${project.galleryImages != null and !project.galleryImages.isEmpty()}">
-      <div class="detail-gallery-heading">
-       <span class="summary-label">Design gallery</span>
-      </div>
       <div class="gallery-frame" data-gallery>
        <div class="gallery-track" aria-label="Design project images">
         <figure class="gallery-card" th:each="image : ${project.galleryImages}">
@@ -47,9 +44,10 @@
         </figure>
        </div>
        <div class="gallery-controls" aria-label="Gallery controls">
-        <button type="button" class="gallery-btn" data-gallery-prev aria-label="Previous image">←</button>
-        <span class="gallery-count"><span data-gallery-current>1</span>/<span data-gallery-total>1</span></span>
-        <button type="button" class="gallery-btn" data-gallery-next aria-label="Next image">→</button>
+        <button type="button" class="gallery-btn gallery-btn-prev" data-gallery-prev aria-label="Previous image"></button>
+        <span class="gallery-dots" data-gallery-dots aria-label="Gallery pages"></span>
+        <span class="gallery-status" aria-live="polite"><span data-gallery-current>1</span>/<span data-gallery-total>1</span></span>
+        <button type="button" class="gallery-btn gallery-btn-next" data-gallery-next aria-label="Next image"></button>
        </div>
       </div>
      </section>
