@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hyein Portfolio</title>
+  <title>portfolio</title>
   <link rel="icon" th:href="@{/favicon.png}" type="image/x-icon" />
   <link rel="stylesheet" th:href="@{/css/style.css}" />
  </head>
@@ -20,6 +20,9 @@
        <span class="heart-pop heart-purple heart-c">♥</span>
        <span class="heart-pop heart-green heart-d">♥</span>
        <span class="heart-pop heart-cream heart-e">♥</span>
+       <span class="heart-pop heart-blue heart-f">♥</span>
+       <span class="heart-pop heart-green heart-g">♥</span>
+       <span class="heart-pop heart-purple heart-h">♥</span>
        <div class="home-concept" aria-label="Design and web connected portfolio concept">
         <div class="concept-frame concept-frame-design">
          <span class="frame-label">DESIGN</span>
@@ -39,7 +42,13 @@
          <span class="frame-handle handle-br"></span>
         </div>
        </div>
-       <svg class="portfolio-title portfolio-title-svg" viewBox="-44 0 1288 250" role="img" aria-labelledby="portfolioTitle" preserveAspectRatio="xMidYMax meet">
+       <svg
+        class="portfolio-title portfolio-title-svg"
+        viewBox="-44 0 1288 250"
+        role="img"
+        aria-labelledby="portfolioTitle"
+        preserveAspectRatio="xMidYMax meet"
+       >
         <title id="portfolioTitle">Portfolio</title>
         <defs>
          <path id="portfolioHeartCut" d="M0,-48 C-18,-80 -69,-76 -78,-34 C-88,13 -31,66 0,98 C31,66 88,13 78,-34 C69,-76 18,-80 0,-48 Z" />
@@ -69,7 +78,7 @@
 
       <section id="about" class="campaign-section about-section local-guide scroll-section">
        <div class="section-heading">
-        <p class="section-eyebrow">About Hyein</p>
+        <p class="section-eyebrow">About</p>
         <h2>나를 더 깊이 만나는 방법</h2>
         <p class="section-lead">화면을 만드는 태도부터 협업 방식까지, 저의 작업 방식을 두 가지 경로로 소개합니다.</p>
        </div>
@@ -100,10 +109,10 @@
           <span>Next.js</span>
           <span>Spring Boot</span>
           <span>MySQL</span>
-         <span>AWS EC2</span>
-         <span>Vercel</span>
-        </div>
-        <div class="skill-marquee-group" aria-hidden="true">
+          <span>AWS EC2</span>
+          <span>Vercel</span>
+         </div>
+         <div class="skill-marquee-group" aria-hidden="true">
           <span>Photoshop</span>
           <span>HTML</span>
           <span>CSS</span>
@@ -145,7 +154,7 @@
 
       <section id="work" class="campaign-section project-dark scroll-section">
        <div class="section-heading">
-        <p class="section-eyebrow">Project showcase</p>
+        <p class="section-eyebrow">Project</p>
         <h2>작업의 방향을 보여주는 프로젝트</h2>
         <p class="section-lead">포트폴리오를 이루는 대표 작업을 카드로 모았습니다.</p>
        </div>
@@ -155,29 +164,27 @@
          <picture>
           <img th:src="@{/images/yourfit-board-display.jpg}" alt="뷰티샵 유어핏 사인보드 디자인 미리보기" loading="eager" />
          </picture>
-         <span class="route-label">Design</span>
+         <span class="route-label"># design</span>
          <h3>뷰티샵 유어핏</h3>
-         <p>브랜드 로고와 토끼 그래픽을 중심으로 포스터, 명함, 스탬프 카드, 사인보드를 통일감 있게 구성한 디자인 프로젝트입니다.</p>
+         <p>부산에 있는 경력 10년차 원장님의 새로운 뷰티샵 브랜딩을 디자인 했습니다.</p>
          <a th:href="@{/work/yourfit-project}" class="card-cta">바로 보기</a>
         </article>
         <article class="campaign-card project-card">
          <picture>
-          <source th:srcset="@{/images/yt-web.webp}" type="image/webp" />
-          <img th:src="@{/images/yt-web.png}" alt="Youtube Script Maker preview" loading="eager" />
+          <img th:src="@{/images/youtube-script-card-preview.png}" alt="Youtube Script Maker preview" loading="eager" />
          </picture>
-         <span class="route-label">Learning Tool</span>
+         <span class="route-label"># website</span>
          <h3>Youtube Script Maker</h3>
-         <p>유튜브 자막을 학습용 스크립트로 정리하고 PDF로 저장할 수 있는 도구입니다.</p>
+         <p>영어 반복 문장 학습에 도움을 주는 유튜브 스크립트 AI 번역기 웹/앱 사이트를 제작했습니다.</p>
          <a th:href="@{/work/yt-script-project}" class="card-cta">바로 보기</a>
         </article>
         <article class="campaign-card project-card">
          <picture>
-          <source th:srcset="@{/images/portfolio_web.webp}" type="image/webp" />
-          <img th:src="@{/images/portfolio_web.png}" alt="Portfolio preview" loading="eager" />
+          <img th:src="@{/images/portfolio-card-preview.png}" alt="Portfolio preview" loading="eager" />
          </picture>
-         <span class="route-label">Archive</span>
+         <span class="route-label"># website</span>
          <h3>Portfolio</h3>
-         <p>자기소개, 프로젝트 상세, 방명록을 담은 개인 포트폴리오 사이트입니다.</p>
+         <p>취업 활동을 위한 포트폴리오 사이트를 제작했습니다.</p>
          <a th:href="@{/work/portfolio-project}" class="card-cta">바로 보기</a>
         </article>
        </div>
@@ -185,7 +192,7 @@
 
       <section id="guest" class="campaign-section guest-section scroll-section">
        <div class="section-heading">
-        <p class="section-eyebrow">Guest book</p>
+        <p class="section-eyebrow">Guest</p>
         <h2>방문한 흔적을 짧게 남겨주세요.</h2>
        </div>
 
@@ -203,7 +210,7 @@
            <p class="guest-success" th:if="${successMessage}" th:text="${successMessage}"></p>
            <p class="guest-error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
           </div>
-          <button type="submit" class="campaign-btn primary guest-submit-btn">Post</button>
+          <button type="submit" class="campaign-btn primary guest-submit-btn">send</button>
          </div>
         </form>
 
@@ -215,7 +222,7 @@
             <span class="guest-date" th:text="${#temporals.format(guest.regDate, 'yyyy.MM.dd')}">Date</span>
            </div>
            <div class="meta-actions">
-            <button type="button" class="action-btn delete-btn" th:attr="data-id=${guest.id}">Delete</button>
+            <button type="button" class="action-btn delete-btn" th:attr="data-id=${guest.id}">delete</button>
            </div>
           </div>
           <div class="guest-message-box">

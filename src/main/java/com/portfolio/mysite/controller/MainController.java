@@ -57,8 +57,8 @@ public class MainController {
                     "2026.04.12. - 2026.04.14.",
                     "Learning Tool",
                     "https://yt-script-maker.vercel.app/",
-                    "/images/yt-web.png",
-                    "/images/yt-web.webp",
+                    "/images/youtube-script-detail-hero.png",
+                    "",
                     "Youtube Script Maker preview",
                     List.of(),
                     List.of("Next.js", "Javascript", "CSS", "Vercel", "Railway", "Gemini API"),
@@ -75,10 +75,12 @@ public class MainController {
                     "2026.02. - 2026.03.",
                     "Archive",
                     "https://jhi-portfolio.site/",
-                    "/images/portfolio_web.png",
-                    "/images/portfolio_web.webp",
+                    "/images/portfolio-detail-hero.png",
+                    "",
                     "Portfolio preview",
-                    List.of(),
+                    List.of(
+                            new GalleryImage("/images/portfolio-detail-sections.png", "Portfolio section overview")
+                    ),
                     List.of("HTML5", "CSS", "Javascript", "Spring Boot", "Thymeleaf", "Swup.js", "AWS EC2", "MySQL"),
                     List.of(
                             new SummaryItem("프로젝트 개요", "나만의 색깔을 담은 개인 포트폴리오이자, 프로젝트와 기록을 함께 정리할 수 있는 아카이브 웹사이트를 개발했습니다."),
@@ -89,11 +91,11 @@ public class MainController {
             "yourfit-project",
             new ProjectDetail(
                     "뷰티샵 유어핏",
-                    "왁싱·뷰티 스튜디오의 부드러운 브랜드 무드를 매장 사인, 명함, 스탬프 카드, 이벤트 포스터로 확장한 디자인 프로젝트",
+                    "부산에 새롭게 오픈한 뷰티 왁싱샵의 로고, 명함, 스탬프 카드 디자인을 제작했습니다. 10년 경력을 가지신 원장님이 유지한 컨셉인 바니의 이미지에 맞추어 귀여운 디자인에 유의했습니다. 판촉몰 전체에 통일감을 갖게 해, 매력이 전해지도록 고민했습니다.",
                     "2026.06.",
                     "Design",
                     "",
-                    "/images/yourfit-board-display.jpg",
+                    "/images/yourfit-detail-hero.jpg",
                     "",
                     "뷰티샵 유어핏 매장 사인보드 시안",
                     List.of(

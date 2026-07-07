@@ -3,59 +3,78 @@
  <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title th:text="${project.title + ' | Work Detail'}">Work Detail</title>
+  <title>portfolio</title>
   <link rel="stylesheet" th:href="@{/css/style.css}" />
  </head>
  <body class="detail-page">
   <main id="swup">
-   <div class="detail-shell is-detail">
+   <div class="detail-shell is-detail" th:classappend="${#strings.equals(project.title, 'Portfolio') ? 'portfolio-project' : ''}">
     <div th:replace="~{fragments/nav :: mainMenu('work')}"></div>
 
     <article class="detail-canvas transition-fade">
      <header class="detail-hero">
       <div class="detail-copy">
-       <p class="detail-label">Project detail</p>
+       <p class="detail-label"># <span th:text="${project.type}">website</span></p>
        <h1 class="detail-title" th:text="${project.title}">Project Title</h1>
-       <p class="detail-subtitle" th:text="${project.subtitle}">Project subtitle</p>
+       <a th:if="${project.visitUrl != null and !#strings.isEmpty(project.visitUrl)}" th:href="${project.visitUrl}" target="_blank" rel="noopener" class="detail-visit-link">Visit site</a>
       </div>
-      <div class="detail-side">
-       <span class="detail-period" th:text="${project.period}">Period</span>
-       <span class="detail-type" th:text="${project.type}">Type</span>
-       <a th:if="${project.visitUrl != null and !#strings.isEmpty(project.visitUrl)}" th:href="${project.visitUrl}" target="_blank" rel="noopener" class="visit-btn">Visit site</a>
-      </div>
+      <figure class="detail-hero-visual">
+       <picture>
+        <source th:if="${!#strings.equals(project.type, 'Learning Tool') and project.imageWebp != null and !#strings.isEmpty(project.imageWebp)}" th:srcset="@{${project.imageWebp}}" type="image/webp" />
+        <img th:if="${#strings.equals(project.type, 'Design')}" th:src="@{/images/yourfit-detail-hero.jpg}" th:alt="${project.imageAlt}" />
+        <img th:if="${#strings.equals(project.type, 'Learning Tool')}" th:src="@{/images/youtube-script-detail-hero.png}" th:alt="${project.imageAlt}" />
+        <img th:if="${!#strings.equals(project.type, 'Design') and !#strings.equals(project.type, 'Learning Tool')}" th:src="@{${project.imagePng}}" th:alt="${project.imageAlt}" />
+       </picture>
+      </figure>
      </header>
 
-     <section class="detail-preview" th:if="${project.galleryImages == null or project.galleryImages.isEmpty()}">
-      <picture>
+     <section class="detail-intro">
+      <p class="detail-subtitle" th:text="${project.subtitle}">Project subtitle</p>
+     </section>
+
+     <section class="detail-wide-visual" aria-label="Project preview">
+      <picture class="detail-wide-picture" th:if="${#strings.equals(project.title, 'Portfolio')}">
+       <img th:src="@{/images/portfolio-detail-sections.png}" alt="Portfolio section overview" loading="lazy" />
+      </picture>
+      <picture class="detail-wide-picture" th:if="${!#strings.equals(project.title, 'Portfolio') and project.galleryImages != null and project.galleryImages.size() == 1}" th:with="image=${project.galleryImages.get(0)}">
+       <img th:src="@{${image.src}}" th:alt="${image.alt}" loading="lazy" />
+      </picture>
+      <div class="detail-gallery" th:if="${!#strings.equals(project.title, 'Portfolio') and project.galleryImages != null and project.galleryImages.size() > 1}">
+       <div class="gallery-frame" data-gallery>
+        <div class="gallery-track" aria-label="Design project images">
+         <figure class="gallery-card" th:each="image : ${project.galleryImages}">
+          <img th:src="@{${image.src}}" th:alt="${image.alt}" loading="lazy" />
+         </figure>
+        </div>
+        <div class="gallery-controls" aria-label="Gallery controls">
+         <button type="button" class="gallery-btn gallery-btn-prev" data-gallery-prev aria-label="Previous image"></button>
+         <span class="gallery-dots" data-gallery-dots aria-label="Gallery pages"></span>
+         <span class="gallery-status" aria-live="polite"><span data-gallery-current>1</span>/<span data-gallery-total>1</span></span>
+         <button type="button" class="gallery-btn gallery-btn-next" data-gallery-next aria-label="Next image"></button>
+        </div>
+       </div>
+      </div>
+      <picture class="detail-wide-picture" th:if="${!#strings.equals(project.title, 'Portfolio') and (project.galleryImages == null or project.galleryImages.isEmpty())}">
        <source th:if="${project.imageWebp != null and !#strings.isEmpty(project.imageWebp)}" th:srcset="@{${project.imageWebp}}" type="image/webp" />
        <img th:src="@{${project.imagePng}}" th:alt="${project.imageAlt}" />
       </picture>
      </section>
 
-     <div class="detail-tags" th:if="${project.tags != null and !project.tags.isEmpty()}">
-      <span th:each="tag : ${project.tags}" th:text="${tag}">Tag</span>
-     </div>
-
-     <section class="detail-gallery" th:if="${project.galleryImages != null and !project.galleryImages.isEmpty()}">
-      <div class="gallery-frame" data-gallery>
-       <div class="gallery-track" aria-label="Design project images">
-        <figure class="gallery-card" th:each="image : ${project.galleryImages}">
-         <img th:src="@{${image.src}}" th:alt="${image.alt}" loading="lazy" />
-        </figure>
+     <section class="detail-info-list" aria-label="Project information">
+      <article class="detail-info-row" th:each="summary : ${project.summaries}">
+       <h2 class="detail-info-label" th:text="${summary.label}">목표</h2>
+       <p class="detail-info-text" th:text="${summary.text}">예시 문장입니다.</p>
+      </article>
+      <article class="detail-info-row">
+       <h2 class="detail-info-label">제작 기간</h2>
+       <div class="detail-info-stack">
+        <p><span>기간</span><span th:text="${project.period}">1주</span></p>
+        <p><span>유형</span><span th:text="${project.type}">website</span></p>
        </div>
-       <div class="gallery-controls" aria-label="Gallery controls">
-        <button type="button" class="gallery-btn gallery-btn-prev" data-gallery-prev aria-label="Previous image"></button>
-        <span class="gallery-dots" data-gallery-dots aria-label="Gallery pages"></span>
-        <span class="gallery-status" aria-live="polite"><span data-gallery-current>1</span>/<span data-gallery-total>1</span></span>
-        <button type="button" class="gallery-btn gallery-btn-next" data-gallery-next aria-label="Next image"></button>
-       </div>
-      </div>
-     </section>
-
-     <section class="summary-grid">
-      <article class="summary-card" th:each="summary : ${project.summaries}">
-       <span class="summary-label" th:text="${summary.label}">Label</span>
-       <p class="summary-text" th:text="${summary.text}">Summary</p>
+      </article>
+      <article class="detail-info-row" th:if="${project.tags != null and !project.tags.isEmpty()}">
+       <h2 class="detail-info-label">사용 도구</h2>
+       <p class="detail-info-tools"><span th:each="tag : ${project.tags}" th:text="${tag}">Tool</span></p>
       </article>
      </section>
     </article>

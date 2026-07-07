@@ -16,7 +16,7 @@
  }
 
  function resetPageScroll() {
-  requestAnimationFrame(() => {
+  const applyTop = () => {
    window.scrollTo(0, 0);
    document.documentElement.scrollTop = 0;
    document.body.scrollTop = 0;
@@ -25,7 +25,38 @@
    if (scrollContainer) {
     scrollContainer.scrollTop = 0;
    }
+  };
+
+  applyTop();
+
+  return new Promise((resolve) => {
+   requestAnimationFrame(() => {
+    applyTop();
+    requestAnimationFrame(() => {
+     applyTop();
+     resolve();
+    });
   });
+  });
+ }
+
+ function isPlainLeftClick(event) {
+  return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+ }
+
+ function prepareDetailNavigation(event) {
+  if (!isPlainLeftClick(event)) return;
+
+  const link = event.target.closest?.("a[href]");
+  if (!link || link.target === "_blank" || link.hasAttribute("download")) return;
+
+  const targetUrl = new URL(link.href, window.location.href);
+  if (targetUrl.origin !== window.location.origin) return;
+  if (!targetUrl.pathname.startsWith("/work/")) return;
+  if (targetUrl.pathname === window.location.pathname) return;
+
+  document.documentElement.classList.add("is-detail-nav-start");
+  resetPageScroll();
  }
 
  function syncPageShell() {
@@ -36,10 +67,90 @@
   document.body.classList.toggle("detail-page", Boolean(isDetail));
   document.body.classList.toggle("campaign-page", Boolean(isCampaign));
 
-  if (mainMenu && isCampaign) {
-   mainMenu.classList.remove("side-index");
-  }
+ if (mainMenu && isCampaign) {
+  mainMenu.classList.remove("side-index");
  }
+}
+
+ function initScrollReveal() {
+  document.querySelectorAll(".site-footer.scroll-reveal").forEach((footer) => {
+   footer.classList.remove("scroll-reveal", "is-visible");
+   footer.style.removeProperty("--reveal-delay");
+  });
+
+  const revealItems = Array.from(
+   document.querySelectorAll(
+    ".scroll-section, .detail-hero, .detail-intro, .detail-wide-visual, .detail-info-row",
+   ),
+  );
+  if (revealItems.length === 0) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (window._scrollRevealFrame) {
+   cancelAnimationFrame(window._scrollRevealFrame);
+   window._scrollRevealFrame = null;
+  }
+
+  if (window._scrollRevealTimer) {
+   clearTimeout(window._scrollRevealTimer);
+   window._scrollRevealTimer = null;
+  }
+
+  if (window._scrollRevealObserver) {
+   window._scrollRevealObserver.disconnect();
+   window._scrollRevealObserver = null;
+  }
+
+  revealItems.forEach((item, index) => {
+   item.classList.add("scroll-reveal");
+   item.classList.remove("is-visible");
+   item.style.removeProperty("--reveal-delay");
+
+   if (document.querySelector(".is-detail")) {
+    item.style.setProperty("--reveal-delay", `${Math.min(index * 54, 216)}ms`);
+   } else if (item.classList.contains("detail-info-row")) {
+    item.style.setProperty("--reveal-delay", `${Math.min(index * 42, 180)}ms`);
+   }
+  });
+
+  document.body.offsetHeight;
+
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+   revealItems.forEach((item) => item.classList.add("is-visible"));
+   return;
+  }
+
+  const revealDelay = document.querySelector(".is-detail") ? 180 : 80;
+
+  window._scrollRevealTimer = setTimeout(() => {
+   window._scrollRevealObserver = new IntersectionObserver(
+    (entries) => {
+     entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      entry.target.classList.add("is-visible");
+      window._scrollRevealObserver.unobserve(entry.target);
+     });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -12% 0px" },
+   );
+
+   revealItems.forEach((item) => {
+    const rect = item.getBoundingClientRect();
+    const isInView = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
+
+    if (isInView) {
+     requestAnimationFrame(() => {
+      item.classList.add("is-visible");
+     });
+     return;
+    }
+
+    window._scrollRevealObserver.observe(item);
+   });
+  }, revealDelay);
+}
 
  function initIndexObserver() {
   const pageRoot = document.querySelector(".campaign-canvas");
@@ -617,9 +728,8 @@
   });
  }
 
- function initHomePage() {
+ function initHomePage({ reveal = true } = {}) {
   syncPageShell();
-  resetPageScroll();
   initMenuNavigation();
 
   const isDetailPage = document.querySelector(".is-detail");
@@ -627,10 +737,13 @@
    initIndexObserver();
   }
 
-  initHeroRoleSlot();
-  initBouncingHearts();
-  initHomeConceptDrag();
-  initDesignGalleryControls();
+ initHeroRoleSlot();
+ initBouncingHearts();
+ initHomeConceptDrag();
+ initDesignGalleryControls();
+  if (reveal) {
+   initScrollReveal();
+  }
 
   const guestbookList = document.querySelector(".guest-list");
   if (guestbookList) {
@@ -656,9 +769,20 @@
   }
  }
 
- document.addEventListener("DOMContentLoaded", initHomePage);
- swup.hooks?.on?.("page:view", () => {
-  resetPageScroll();
-  initHomePage();
- });
+ async function initPageView() {
+  window._pageViewToken = (window._pageViewToken || 0) + 1;
+  const pageViewToken = window._pageViewToken;
+
+  initHomePage({ reveal: false });
+  await resetPageScroll();
+
+  if (pageViewToken !== window._pageViewToken) return;
+
+  initScrollReveal();
+  document.documentElement.classList.remove("is-detail-nav-start");
+ }
+
+ document.addEventListener("click", prepareDetailNavigation, true);
+ document.addEventListener("DOMContentLoaded", initPageView);
+ swup.hooks?.on?.("page:view", initPageView);
 </script>
