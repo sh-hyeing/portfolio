@@ -16,9 +16,13 @@
  }
 
  function resetPageScroll() {
+  const root = document.documentElement;
+  const previousScrollBehavior = root.style.scrollBehavior;
+
   const applyTop = () => {
-   window.scrollTo(0, 0);
-   document.documentElement.scrollTop = 0;
+   root.style.scrollBehavior = "auto";
+   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+   root.scrollTop = 0;
    document.body.scrollTop = 0;
 
    const scrollContainer = document.querySelector(".campaign-canvas, .detail-canvas");
@@ -34,6 +38,7 @@
     applyTop();
     requestAnimationFrame(() => {
      applyTop();
+     root.style.scrollBehavior = previousScrollBehavior;
      resolve();
     });
   });
@@ -56,7 +61,17 @@
   if (targetUrl.pathname === window.location.pathname) return;
 
   document.documentElement.classList.add("is-detail-nav-start");
+ }
+
+ function isWorkDetailPath(pathname = window.location.pathname) {
+  return pathname.startsWith("/work/");
+ }
+
+ function keepDetailPageAtTop() {
+  if (!isWorkDetailPath()) return;
+
   resetPageScroll();
+  setTimeout(resetPageScroll, 80);
  }
 
  function syncPageShell() {
@@ -728,6 +743,33 @@
   });
  }
 
+ function initDetailMediaLoading() {
+  const detailRoot = document.querySelector(".is-detail");
+  if (!detailRoot) return;
+
+  const images = detailRoot.querySelectorAll(
+   ".detail-hero-visual img, .detail-wide-picture img, .gallery-card img",
+  );
+
+  images.forEach((image) => {
+   const mediaShell = image.closest("picture, figure");
+   const markLoaded = () => {
+    image.classList.add("is-loaded");
+    mediaShell?.classList.add("is-media-loaded");
+   };
+
+   image.classList.add("detail-media");
+
+   if (image.complete && image.naturalWidth > 0) {
+    markLoaded();
+    return;
+   }
+
+   image.addEventListener("load", markLoaded, { once: true });
+   image.addEventListener("error", markLoaded, { once: true });
+  });
+ }
+
  function initHomePage({ reveal = true } = {}) {
   syncPageShell();
   initMenuNavigation();
@@ -741,6 +783,7 @@
  initBouncingHearts();
  initHomeConceptDrag();
  initDesignGalleryControls();
+ initDetailMediaLoading();
   if (reveal) {
    initScrollReveal();
   }
@@ -773,6 +816,7 @@
   window._pageViewToken = (window._pageViewToken || 0) + 1;
   const pageViewToken = window._pageViewToken;
 
+  keepDetailPageAtTop();
   initHomePage({ reveal: false });
   await resetPageScroll();
 
@@ -783,6 +827,9 @@
  }
 
  document.addEventListener("click", prepareDetailNavigation, true);
+ window.addEventListener("pageshow", keepDetailPageAtTop);
  document.addEventListener("DOMContentLoaded", initPageView);
+ swup.hooks?.on?.("visit:start", keepDetailPageAtTop);
+ swup.hooks?.on?.("content:replace", keepDetailPageAtTop);
  swup.hooks?.on?.("page:view", initPageView);
 </script>

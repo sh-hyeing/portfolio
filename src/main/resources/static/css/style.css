@@ -1176,9 +1176,9 @@ html.is-detail-nav-start .transition-fade {
 }
 
 .detail-label {
- color: var(--color-text);
+ color: var(--color-mint);
  font-size: clamp(0.95rem, 1.35vw, 1.08rem);
- font-weight: 400;
+ font-weight: 700;
  line-height: 1.2;
 }
 
@@ -1240,8 +1240,16 @@ html.is-detail-nav-start .transition-fade {
  object-fit: cover;
  object-position: center top;
  outline: 0;
+ opacity: 0;
  scale: 1.18;
  transform-origin: center top;
+ transition: opacity 0.24s ease;
+}
+
+.detail-hero-visual img.is-loaded,
+.detail-wide-picture img.is-loaded,
+.gallery-card img.is-loaded {
+ opacity: 1;
 }
 
 .portfolio-project .detail-hero-visual {
@@ -1335,8 +1343,10 @@ html.is-detail-nav-start .transition-fade {
  object-fit: cover;
  object-position: center top;
  outline: 0;
+ opacity: 0;
  scale: 1.12;
  transform-origin: center top;
+ transition: opacity 0.24s ease;
 }
 
 .portfolio-project .detail-wide-picture {
@@ -1356,6 +1366,10 @@ html.is-detail-nav-start .transition-fade {
  width: min(calc(100% - 48px), 780px);
  margin: 0 auto;
  padding: clamp(42px, 7vw, 66px) 0 clamp(58px, 8vw, 82px);
+}
+
+.no-wide-visual .detail-info-list {
+ padding-top: 0;
 }
 
 .detail-info-row {
@@ -1459,6 +1473,8 @@ html.is-detail-nav-start .transition-fade {
  height: auto;
  object-fit: contain;
  background: transparent;
+ opacity: 0;
+ transition: opacity 0.24s ease;
 }
 
 .gallery-controls {
@@ -1966,8 +1982,12 @@ html.is-detail-nav-start .transition-fade {
 
  .detail-info-list {
   width: min(calc(100% - 32px), 520px);
-  padding-top: 42px;
+  padding-top: 54px;
   padding-bottom: 62px;
+ }
+
+ .no-wide-visual .detail-info-list {
+  padding-top: 0;
  }
 
  .detail-info-row {

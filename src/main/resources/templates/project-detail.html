@@ -8,13 +8,13 @@
  </head>
  <body class="detail-page">
   <main id="swup">
-   <div class="detail-shell is-detail" th:classappend="${#strings.equals(project.title, 'Portfolio') ? 'portfolio-project' : ''}">
+   <div class="detail-shell is-detail" th:classappend="${#strings.equals(project.title, 'Portfolio') ? 'portfolio-project' : (project.galleryImages == null or project.galleryImages.isEmpty()) ? 'no-wide-visual' : ''}">
     <div th:replace="~{fragments/nav :: mainMenu('work')}"></div>
 
     <article class="detail-canvas transition-fade">
      <header class="detail-hero">
       <div class="detail-copy">
-       <p class="detail-label"># <span th:text="${project.type}">website</span></p>
+       <p class="detail-label" th:text="${#strings.equals(project.type, 'Design') ? '# design' : '# website'}"># website</p>
        <h1 class="detail-title" th:text="${project.title}">Project Title</h1>
        <a th:if="${project.visitUrl != null and !#strings.isEmpty(project.visitUrl)}" th:href="${project.visitUrl}" target="_blank" rel="noopener" class="detail-visit-link">Visit site</a>
       </div>
@@ -32,7 +32,7 @@
       <p class="detail-subtitle" th:text="${project.subtitle}">Project subtitle</p>
      </section>
 
-     <section class="detail-wide-visual" aria-label="Project preview">
+     <section class="detail-wide-visual" aria-label="Project preview" th:if="${#strings.equals(project.title, 'Portfolio') or (project.galleryImages != null and !project.galleryImages.isEmpty())}">
       <picture class="detail-wide-picture" th:if="${#strings.equals(project.title, 'Portfolio')}">
        <img th:src="@{/images/portfolio-detail-sections.png}" alt="Portfolio section overview" loading="lazy" />
       </picture>
@@ -54,10 +54,6 @@
         </div>
        </div>
       </div>
-      <picture class="detail-wide-picture" th:if="${!#strings.equals(project.title, 'Portfolio') and (project.galleryImages == null or project.galleryImages.isEmpty())}">
-       <source th:if="${project.imageWebp != null and !#strings.isEmpty(project.imageWebp)}" th:srcset="@{${project.imageWebp}}" type="image/webp" />
-       <img th:src="@{${project.imagePng}}" th:alt="${project.imageAlt}" />
-      </picture>
      </section>
 
      <section class="detail-info-list" aria-label="Project information">
@@ -69,7 +65,6 @@
        <h2 class="detail-info-label">제작 기간</h2>
        <div class="detail-info-stack">
         <p><span>기간</span><span th:text="${project.period}">1주</span></p>
-        <p><span>유형</span><span th:text="${project.type}">website</span></p>
        </div>
       </article>
       <article class="detail-info-row" th:if="${project.tags != null and !project.tags.isEmpty()}">
