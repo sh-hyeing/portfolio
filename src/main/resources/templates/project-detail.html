@@ -21,8 +21,8 @@
       <figure class="detail-hero-visual">
        <picture>
         <source th:if="${!#strings.equals(project.type, 'Learning Tool') and project.imageWebp != null and !#strings.isEmpty(project.imageWebp)}" th:srcset="@{${project.imageWebp}}" type="image/webp" />
-        <img th:if="${#strings.equals(project.type, 'Design')}" th:src="@{/images/yourfit-detail-hero.jpg}" th:alt="${project.imageAlt}" />
-        <img th:if="${#strings.equals(project.type, 'Learning Tool')}" th:src="@{/images/youtube-script-detail-hero.png}" th:alt="${project.imageAlt}" />
+        <img th:if="${#strings.equals(project.type, 'Design')}" th:src="@{/images/yourfit-detail-hero.webp}" th:alt="${project.imageAlt}" />
+        <img th:if="${#strings.equals(project.type, 'Learning Tool')}" th:src="@{/images/youtube-script-detail-hero.webp}" th:alt="${project.imageAlt}" />
         <img th:if="${!#strings.equals(project.type, 'Design') and !#strings.equals(project.type, 'Learning Tool')}" th:src="@{${project.imagePng}}" th:alt="${project.imageAlt}" />
        </picture>
       </figure>
@@ -34,7 +34,7 @@
 
      <section class="detail-wide-visual" aria-label="Project preview" th:if="${#strings.equals(project.title, 'Portfolio') or (project.galleryImages != null and !project.galleryImages.isEmpty())}">
       <picture class="detail-wide-picture" th:if="${#strings.equals(project.title, 'Portfolio')}">
-       <img th:src="@{/images/portfolio-detail-sections.png}" alt="Portfolio section overview" loading="lazy" />
+       <img th:src="@{/images/portfolio-detail-sections.webp}" alt="Portfolio section overview" loading="lazy" />
       </picture>
       <picture class="detail-wide-picture" th:if="${!#strings.equals(project.title, 'Portfolio') and project.galleryImages != null and project.galleryImages.size() == 1}" th:with="image=${project.galleryImages.get(0)}">
        <img th:src="@{${image.src}}" th:alt="${image.alt}" loading="lazy" />
@@ -64,7 +64,10 @@
       <article class="detail-info-row">
        <h2 class="detail-info-label">제작 기간</h2>
        <div class="detail-info-stack">
-        <p><span>기간</span><span th:text="${project.period}">1주</span></p>
+        <p th:each="period : ${project.periods}">
+         <span th:text="${period.label}">기획</span>
+         <span th:text="${period.duration}">1주</span>
+        </p>
        </div>
       </article>
       <article class="detail-info-row" th:if="${project.tags != null and !project.tags.isEmpty()}">

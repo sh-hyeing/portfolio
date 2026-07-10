@@ -54,10 +54,10 @@ public class MainController {
             new ProjectDetail(
                     "Youtube Script Maker",
                     "유튜브 영상 자막을 불러와 영어·한국어 학습용 스크립트로 정리하고 PDF로 저장할 수 있는 웹 기반 학습 도구",
-                    "2026.04.12. - 2026.04.14.",
+                    List.of(new PeriodItem("기간", "2026.04.12. - 2026.04.14.")),
                     "Learning Tool",
                     "https://yt-script-maker.vercel.app/",
-                    "/images/youtube-script-detail-hero.png",
+                    "/images/youtube-script-detail-hero.webp",
                     "",
                     "Youtube Script Maker preview",
                     List.of(),
@@ -72,14 +72,14 @@ public class MainController {
             new ProjectDetail(
                     "Portfolio",
                     "나만의 색깔과 작업 흐름을 담아낸 개인 포트폴리오 및 아카이브 웹사이트",
-                    "2026.02. - 2026.03.",
+                    List.of(new PeriodItem("기간", "2026.02. - 2026.03.")),
                     "Archive",
                     "https://jhi-portfolio.site/",
-                    "/images/portfolio-detail-hero.png",
+                    "/images/portfolio-detail-hero.webp",
                     "",
                     "Portfolio preview",
                     List.of(
-                            new GalleryImage("/images/portfolio-detail-sections.png", "Portfolio section overview")
+                            new GalleryImage("/images/portfolio-detail-sections.webp", "Portfolio section overview")
                     ),
                     List.of("HTML5", "CSS", "Javascript", "Spring Boot", "Thymeleaf", "Swup.js", "AWS EC2", "MySQL"),
                     List.of(
@@ -92,19 +92,22 @@ public class MainController {
             new ProjectDetail(
                     "뷰티샵 유어핏",
                     "부산에 새롭게 오픈한 뷰티 왁싱샵의 로고, 명함, 스탬프 카드 디자인을 제작했습니다. 10년 경력을 가지신 원장님이 유지한 컨셉인 바니의 이미지에 맞추어 귀여운 디자인에 유의했습니다. 판촉몰 전체에 통일감을 갖게 해, 매력이 전해지도록 고민했습니다.",
-                    "2026.06.",
+                    List.of(
+                            new PeriodItem("기획", "1주"),
+                            new PeriodItem("디자인", "2주")
+                    ),
                     "Design",
                     "",
-                    "/images/yourfit-detail-hero.jpg",
+                    "/images/yourfit-detail-hero.webp",
                     "",
                     "뷰티샵 유어핏 매장 사인보드 시안",
                     List.of(
-                            new GalleryImage("/images/yourfit-board-display.jpg", "유어핏 매장 사인보드 시안"),
-                            new GalleryImage("/images/yourfit-poster-display.jpg", "유어핏 오픈 이벤트 포스터"),
-                            new GalleryImage("/images/yourfit-stamp-card-display.jpg", "유어핏 스탬프 카드 디자인"),
-                            new GalleryImage("/images/yourfit-business-card-display.jpg", "유어핏 명함 디자인")
+                            new GalleryImage("/images/yourfit-board-display.webp", "유어핏 매장 사인보드 시안"),
+                            new GalleryImage("/images/yourfit-poster-display.webp", "유어핏 오픈 이벤트 포스터"),
+                            new GalleryImage("/images/yourfit-stamp-card-display.webp", "유어핏 스탬프 카드 디자인"),
+                            new GalleryImage("/images/yourfit-business-card-display.webp", "유어핏 명함 디자인")
                     ),
-                    List.of(),
+                    List.of("Canva", "Procreate"),
                     List.of(
                             new SummaryItem("프로젝트 개요", "뷰티샵 유어핏의 로고와 캐릭터 그래픽을 중심으로 매장 경험에 필요한 인쇄물과 사인 시스템을 구성했습니다."),
                             new SummaryItem("디자인 방향", "크림 톤의 종이 질감, 부드러운 핑크 포인트, 손그림 토끼 그래픽을 활용해 친근하고 편안한 뷰티샵 이미지를 만들었습니다."),
@@ -116,7 +119,7 @@ public class MainController {
     public record ProjectDetail(
             String title,
             String subtitle,
-            String period,
+            List<PeriodItem> periods,
             String type,
             String visitUrl,
             String imagePng,
@@ -131,8 +134,10 @@ public class MainController {
     public record GalleryImage(String src, String alt) {
     }
 
+    public record PeriodItem(String label, String duration) {
+    }
+
     public record SummaryItem(String label, String text) {
     }
 
 }
-

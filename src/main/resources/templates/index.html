@@ -80,9 +80,40 @@
        <div class="section-heading">
         <p class="section-eyebrow">About</p>
         <h2>나를 더 깊이 만나는 방법</h2>
-        <p class="section-lead">화면을 만드는 태도부터 협업 방식까지, 저의 작업 방식을 두 가지 경로로 소개합니다.</p>
        </div>
 
+       <div class="about-profile-layout">
+        <div class="about-photo-stack" aria-label="Profile photos">
+         <figure class="about-photo-frame about-photo-frame-large">
+          <span class="frame-handle handle-tl"></span>
+          <span class="frame-handle handle-tr"></span>
+          <span class="frame-handle handle-bl"></span>
+          <span class="frame-handle handle-br"></span>
+          <img th:src="@{/images/about-cinema.webp}" alt="영화 포스터 앞에서 사진을 찍는 정혜인" loading="lazy" />
+         </figure>
+         <figure class="about-photo-frame about-photo-frame-small">
+          <span class="frame-handle handle-tl"></span>
+          <span class="frame-handle handle-tr"></span>
+          <span class="frame-handle handle-bl"></span>
+          <span class="frame-handle handle-br"></span>
+          <img th:src="@{/images/about-profile.webp}" alt="정혜인 프로필 사진" loading="lazy" />
+         </figure>
+        </div>
+
+        <article class="about-wireframe-card" aria-labelledby="aboutWireTitle">
+         <span class="frame-handle handle-tl"></span>
+         <span class="frame-handle handle-tr"></span>
+         <span class="frame-handle handle-bl"></span>
+         <span class="frame-handle handle-br"></span>
+         <p class="about-wire-kicker" id="aboutWireTitle">정혜인</p>
+         <h3>Jeong Hyein</h3>
+         <div class="about-wire-copy">
+          <p>정보와 브랜드의 이미지를 움직임이 있는 화면으로 전할 수 있는 웹디자인에 매료되어, 사용자의 마음에 오래 남는 웹개발자를 목표로 하고 있습니다.</p>
+          <p>모든 작업에서 “정중하게, 섬세하게”를 제 모토로 삼고 있으며, 작은 여백과 움직임에도 의미를 담아 완성도 있는 경험을 만들고자 합니다.</p>
+          <p>특기는 사람의 인상을 관찰해 간단한 캐리커처로 그리기, 취미는 좋아하는 드라마와 영화를 반복해서 보며 대사를 외우고, 일상에서 따라 하기입니다.</p>
+         </div>
+        </article>
+       </div>
        <div class="campaign-grid two-col">
         <article class="campaign-card profile-card">
          <div class="card-visual heart-visual"><span></span><span></span><span></span></div>
@@ -162,7 +193,7 @@
        <div class="campaign-grid project-grid">
         <article class="campaign-card project-card">
          <picture>
-          <img th:src="@{/images/yourfit-board-display.jpg}" alt="뷰티샵 유어핏 사인보드 디자인 미리보기" loading="eager" />
+          <img th:src="@{/images/yourfit-board-display.webp}" alt="뷰티샵 유어핏 사인보드 디자인 미리보기" loading="eager" />
          </picture>
          <span class="route-label"># design</span>
          <h3>뷰티샵 유어핏</h3>
@@ -171,7 +202,7 @@
         </article>
         <article class="campaign-card project-card">
          <picture>
-          <img th:src="@{/images/youtube-script-card-preview.png}" alt="Youtube Script Maker preview" loading="eager" />
+          <img th:src="@{/images/youtube-script-card-preview.webp}" alt="Youtube Script Maker preview" loading="eager" />
          </picture>
          <span class="route-label"># website</span>
          <h3>Youtube Script Maker</h3>
@@ -180,7 +211,7 @@
         </article>
         <article class="campaign-card project-card">
          <picture>
-          <img th:src="@{/images/portfolio-card-preview.png}" alt="Portfolio preview" loading="eager" />
+          <img th:src="@{/images/portfolio-card-preview.webp}" alt="Portfolio preview" loading="eager" />
          </picture>
          <span class="route-label"># website</span>
          <h3>Portfolio</h3>
