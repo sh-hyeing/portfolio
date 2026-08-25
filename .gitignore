@@ -23,6 +23,7 @@ target/
 /nbproject/private/
 /nbbuild/
 /dist/
+.wrangler/
 /nbdist/
 /.nb-gradle/
 build/
@@ -33,3 +34,8 @@ build/
 .vscode/
 
 src/main/resources/application.properties
+
+# Environment / secrets
+.env
+.env.*
+!.env.example

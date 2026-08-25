@@ -1,0 +1,8 @@
+name = "mysite"
+compatibility_date = "2026-08-25"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "portfolio_guest"
+database_id = "fe8fcacb-072e-4d10-b6b0-453e7d39d615"

@@ -1127,6 +1127,13 @@ html.is-detail-nav-start .transition-fade {
  margin: 0 auto;
 }
 
+.guest-empty {
+ margin: 0;
+ color: rgba(63, 46, 39, 0.68);
+ font-size: clamp(0.95rem, 1.8vw, 1rem);
+ line-height: 1.6;
+}
+
 .guest-item {
  padding: clamp(18px, 2.6vw, 28px);
 }

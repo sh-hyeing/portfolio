@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build:cloudflare": "node scripts/build-cloudflare.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

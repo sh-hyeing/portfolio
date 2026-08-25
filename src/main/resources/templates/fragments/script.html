@@ -770,6 +770,189 @@
   });
  }
 
+ function showGuestbookFeedback(message, type = "success") {
+  const feedback = document.querySelector(".guest-feedback");
+  if (!feedback) return;
+
+  feedback.replaceChildren();
+  if (!message) return;
+
+  const text = document.createElement("p");
+  text.className = type === "error" ? "guest-error" : "guest-success";
+  text.textContent = message;
+  feedback.appendChild(text);
+ }
+
+ function createGuestbookItem(guest) {
+  const item = document.createElement("article");
+  item.className = "guest-item";
+
+  const meta = document.createElement("div");
+  meta.className = "guest-meta";
+
+  const metaInfo = document.createElement("div");
+  metaInfo.className = "meta-info";
+
+  const name = document.createElement("span");
+  name.className = "guest-name";
+  name.textContent = guest.name;
+
+  const date = document.createElement("span");
+  date.className = "guest-date";
+  const parsedDate = guest.regDate ? new Date(guest.regDate) : null;
+  date.textContent =
+   parsedDate && !Number.isNaN(parsedDate.getTime())
+    ? parsedDate.toLocaleDateString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" }).replace(/\.\s?/g, ".").replace(/\.$/, "")
+    : "";
+
+  metaInfo.append(name, date);
+
+  const metaActions = document.createElement("div");
+  metaActions.className = "meta-actions";
+
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.className = "action-btn delete-btn";
+  deleteButton.dataset.id = guest.id;
+  deleteButton.textContent = "delete";
+  metaActions.appendChild(deleteButton);
+
+  meta.append(metaInfo, metaActions);
+
+  const messageBox = document.createElement("div");
+  messageBox.className = "guest-message-box";
+  const message = document.createElement("p");
+  message.textContent = guest.message;
+  messageBox.appendChild(message);
+
+  item.append(meta, messageBox);
+  return item;
+ }
+
+ async function requestGuestbookApi(path = "", options = {}) {
+  const response = await fetch(`/api/guestbook${path}`, {
+   headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+   ...options,
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+   throw new Error(payload.error || "방명록 요청을 처리하지 못했습니다.");
+  }
+
+  return payload;
+ }
+
+ async function loadGuestbookEntries() {
+  const guestbookList = document.querySelector(".guest-list[data-guestbook-api]");
+  if (!guestbookList) return;
+
+  guestbookList.replaceChildren();
+  const loading = document.createElement("p");
+  loading.className = "guest-empty";
+  loading.textContent = "방명록을 불러오는 중입니다.";
+  guestbookList.appendChild(loading);
+
+  try {
+   const entries = await requestGuestbookApi();
+   guestbookList.replaceChildren();
+
+   if (!entries.length) {
+    const empty = document.createElement("p");
+    empty.className = "guest-empty";
+    empty.textContent = "아직 남겨진 방명록이 없습니다.";
+    guestbookList.appendChild(empty);
+    return;
+   }
+
+   entries.forEach((guest) => {
+    guestbookList.appendChild(createGuestbookItem(guest));
+   });
+  } catch (error) {
+   guestbookList.replaceChildren();
+   showGuestbookFeedback(error.message, "error");
+  }
+ }
+
+ function initGuestbook() {
+  const form = document.querySelector(".guest-form");
+  const guestbookList = document.querySelector(".guest-list");
+  if (!form || !guestbookList || guestbookList.dataset.guestbookBound === "true") return;
+
+  guestbookList.dataset.guestbookBound = "true";
+
+  if (form.dataset.guestbookApi === "true") {
+   loadGuestbookEntries();
+
+   form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+
+    try {
+     await requestGuestbookApi("", {
+      method: "POST",
+      body: JSON.stringify({
+       name: formData.get("name"),
+       password: formData.get("password"),
+       message: formData.get("message"),
+       website: formData.get("website"),
+       submittedAt: formData.get("submittedAt"),
+      }),
+     });
+     form.reset();
+     const submittedAt = form.querySelector('input[name="submittedAt"]');
+     if (submittedAt) submittedAt.value = String(Date.now());
+     showGuestbookFeedback("방명록이 등록되었습니다.");
+     await loadGuestbookEntries();
+    } catch (error) {
+     showGuestbookFeedback(error.message, "error");
+    }
+   });
+
+   guestbookList.addEventListener("click", async (event) => {
+    if (!event.target.classList.contains("delete-btn")) return;
+
+    event.preventDefault();
+    const guestId = event.target.getAttribute("data-id");
+    const password = prompt("삭제를 위해 비밀번호를 입력해주세요.");
+    if (!password) return;
+
+    try {
+     await requestGuestbookApi(`/${guestId}`, {
+      method: "DELETE",
+      body: JSON.stringify({ password }),
+     });
+     showGuestbookFeedback("방명록이 삭제되었습니다.");
+     await loadGuestbookEntries();
+    } catch (error) {
+     showGuestbookFeedback(error.message, "error");
+    }
+   });
+
+   return;
+  }
+
+  guestbookList.addEventListener("click", (e) => {
+   if (e.target.classList.contains("delete-btn")) {
+    e.preventDefault();
+    const guestId = e.target.getAttribute("data-id");
+    const password = prompt("삭제를 위해 비밀번호를 입력해주세요.");
+    if (password) {
+     const form = document.createElement("form");
+     form.method = "POST";
+     form.action = `/guest/delete/${guestId}`;
+     const input = document.createElement("input");
+     input.type = "hidden";
+     input.name = "password";
+     input.value = password;
+     form.appendChild(input);
+     document.body.appendChild(form);
+     form.submit();
+    }
+   }
+  });
+ }
+
  function initHomePage({ reveal = true } = {}) {
   syncPageShell();
   initMenuNavigation();
@@ -784,31 +967,9 @@
  initHomeConceptDrag();
  initDesignGalleryControls();
  initDetailMediaLoading();
+ initGuestbook();
   if (reveal) {
    initScrollReveal();
-  }
-
-  const guestbookList = document.querySelector(".guest-list");
-  if (guestbookList) {
-   guestbookList.addEventListener("click", (e) => {
-    if (e.target.classList.contains("delete-btn")) {
-     e.preventDefault();
-     const guestId = e.target.getAttribute("data-id");
-     const password = prompt("삭제를 위해 비밀번호를 입력해주세요.");
-     if (password) {
-      const form = document.createElement("form");
-      form.method = "POST";
-      form.action = `/guest/delete/${guestId}`;
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = "password";
-      input.value = password;
-      form.appendChild(input);
-      document.body.appendChild(form);
-      form.submit();
-     }
-    }
-   });
   }
  }
 

@@ -4,6 +4,7 @@ import com.portfolio.mysite.entity.Guestbook;
 import com.portfolio.mysite.repository.GuestbookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import org.springframework.lang.NonNull;
 public class GuestbookService {
 
     private final GuestbookRepository guestbookRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<Guestbook> getAllMessages() {
         return guestbookRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
@@ -23,13 +25,14 @@ public class GuestbookService {
 
    @Transactional
         public void saveMessage(@NonNull Guestbook guestbook)  {
+        guestbook.setPassword(passwordEncoder.encode(guestbook.getPassword()));
         guestbookRepository.save(guestbook);
     }
 
     @Transactional
     public boolean deleteMessage(@NonNull Long id, String password) {
         return guestbookRepository.findById(id)
-                .filter(guest -> guest.getPassword().equals(password))
+                .filter(guest -> passwordEncoder.matches(password, guest.getPassword()))
                 .map(guest -> {
                     guestbookRepository.delete(guest);
                     return true;
